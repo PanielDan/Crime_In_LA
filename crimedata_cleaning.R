@@ -5,9 +5,12 @@
 ########################################
 #import libraries
 library(tidyr)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
 
 #set wd
-setwd("/Users/Becca/Desktop/infGit")
+setwd("~/Desktop/infGit")
 
 #load data 
 data = read.csv("Crime_Data_from_2010_to_Present.csv", header=TRUE) #26 variables, 1,500,000+ observations
@@ -67,3 +70,8 @@ df$Latutude = as.integer(df$Latitude)
 df$Longitude = as.integer(df$Longitude)
 
 #summary(df)
+
+#dataframe only for entries with valid lat/lon
+dfloc = df[df$Latitude != 0,]
+
+
