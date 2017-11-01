@@ -8,11 +8,12 @@ library(tidyr)
 library(dplyr)
 library(lubridate)
 library(ggplot2)
+library(data.table)
 
 #set wd
-setwd("~/Desktop/infGit")
+setwd("~/Documents/infGit")
 
-#load data 
+#load raw data 
 data = read.csv("Crime_Data_from_2010_to_Present.csv", header=TRUE) #26 variables, 1,500,000+ observations
 
 #find out a bit about our data 
@@ -47,14 +48,14 @@ str(data)
 #build our dataframe to manipulate:
 df = data
 
-#separate latitude and logitude values 
+#separate latitude and longitude values 
 df = separate(data = df, col = Location, into = c("none", "Location"), sep="\\(")
 df = df[,-26]
 df = separate(data = df, col = Location, into = c("Latitude", "Longitude"), sep="\\, ")
 df = separate(data = df, col = Longitude, into = c("Longitude", "none"), sep="\\)")
 df = df[,-28]
 
-#set proper data types for each column
+#set data types for each column
 df$Date.Reported = strptime(as.character(df$Date.Occurred), "%m/%d/%Y")
 df$Date.Occurred = strptime(as.character(df$Date.Occurred), "%m/%d/%Y")
 df$Area.ID = as.factor(df$Area.ID) 
@@ -66,12 +67,32 @@ df$Crime.Code.1 = as.factor(df$Crime.Code.1)
 df$Crime.Code.2 = as.factor(df$Crime.Code.2)
 df$Crime.Code.3 = as.factor(df$Crime.Code.3)
 df$Crime.Code.4 = as.factor(df$Crime.Code.4)
-df$Latutude = as.integer(df$Latitude)
-df$Longitude = as.integer(df$Longitude)
 
 #summary(df)
 
-#dataframe only for entries with valid lat/lon
-dfloc = df[df$Latitude != 0,]
+#add day of the week, month, and year
+df$Weekday = weekdays(df$Date.Occurred)
+df$Month = months(df$Date.Occurred)
+
+
+#create testing dataset 
+dftest = df[1:100,2:29]
+dftest = dftest[,-9]
+dftest = dftest[,-9]
+dftest = dftest[,-9]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+
+write.csv(dftest, "test.csv", row.names = FALSE)
 
 
