@@ -73,25 +73,10 @@ df$Crime.Code.4 = as.factor(df$Crime.Code.4)
 #add day of the week, month, and year
 df$Weekday = weekdays(df$Date.Occurred)
 df$Month = months(df$Date.Occurred)
+df$Year = format(df$Date.Occurred, '%Y')
 
 #create testing dataset 
-dftest = df[1:100,2:29]
-dftest = dftest[,-9]
-dftest = dftest[,-9]
-dftest = dftest[,-9]
-dftest = dftest[,-10]
-dftest = dftest[,-10]
-dftest = dftest[,-10]
-dftest = dftest[,-10]
-dftest = dftest[,-10]
-dftest = dftest[,-10]
-dftest = dftest[,-11]
-dftest = dftest[,-11]
-dftest = dftest[,-11]
-dftest = dftest[,-11]
-dftest = dftest[,-11]
-dftest = dftest[,-11]
-
+dftest = df[1:100,c(2:6,8:9,13,19,26:30)]
 write.csv(dftest, "test.csv", row.names = FALSE)
 
 #consolidate crimes - lots of cleanup here!
@@ -140,3 +125,29 @@ dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("740","745")] = "VA
 dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("900","901","902","906")] = "VIOLATION OF COURT ORDER"
 dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("761","756")] = "WEAPONS POSESSION"
 
+
+#dataframes or entries with valid lat/lon
+df.l = df[df$Latitude != 0,]
+dfcrimes.l = dfcrimes[dfcrimes$Latitude != 0,]
+
+#data for only 2010 and 2015
+df.reduced = df[df$Year %in% c("2010","2015"),]
+dfcrimes.reduced = dfcrimes[dfcrimes$Year %in% c("2010","2015"),]
+df.l.reduced = df.l[df.l$Year %in% c("2010","2015"),]
+dfcrimes.l.reduced = dfcrimes.l[dfcrimes.l$Year %in% c("2010","2015"),]
+
+#data for heat maps
+df.hm = dfcrimes.l.reduced[,c("Date.Reported","Date.Occurred","Time.Occurred","Crime.Code","Latitude","Longitude","Weekday","Month","Year","Consolidated.Description")]
+write.csv(df.hm, "heatmap.csv", row.names = FALSE)
+
+#data for simulation
+df.sim = dfcrimes.reduced[,c(2:3,8,30:31)]
+write.csv(df.sim, "simulation.csv", row.names = FALSE)
+
+#data for interactive slope graph
+df.sg = dfcrimes[,c(4:6,8,28:31)]
+write.csv(df.sg, "slopegraph.csv", row.names = FALSE)
+
+#data for bar charts
+df.bc = dfcrimes.reduced[,c(2:6,8,13,19,28:31)]
+write.csv(df.bc, "barchart.csv", row.names = FALSE)
