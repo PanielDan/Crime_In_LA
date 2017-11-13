@@ -6,3 +6,8 @@ body {
 	  -o-tab-size: 2;
 	     tab-size: 2;
 }
+
+svg.line > .chart path {
+	fill: none;
+	stroke: currentColor;
+}
