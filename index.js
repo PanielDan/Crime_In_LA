@@ -2,6 +2,51 @@
 
 "use strict";
 
+// http://www.lapdonline.org/
+const POPULATION = {
+	"77th Street": 175000,
+	"Central":      40000,
+	"Devonshire":  219136,
+	"Foothill":    182214,
+	"Harbor":      171000,
+	"Hollenbeck":  200000,
+	"Hollywood":   300000,
+	"Mission":     225849,
+	"N Hollywood": 220000,
+	"Newton":      150000,
+	"Northeast":   250000,
+	"Olympic":     200000,
+	"Pacific":     200000,
+	"Rampart":     164961,
+	"Southeast":   150000,
+	"Southwest":   165000,
+	"Topanga":      57032,
+	"Van Nuys":    325000,
+	"West LA":     228000,
+	"West Valley": 196840,
+	"Wilshire":    251000,
+};
+
+function simulate(data, options = {}) {
+	let total = Object.values(data).reduce((accumulator, item) => accumulator + item, 0);
+	let normalized = Object.entries(data).reduce((accumulator, [key, value]) => {
+		accumulator[key] = value / total;
+		return accumulator;
+	}, {});
+
+	return (new Array(options.size)).fill(0).map((item, i) => {
+		if (Math.random() > total / options.population)
+			return null;
+
+		let random = Math.random();
+		for (let key in normalized) {
+			random -= normalized[key];
+			if (random <= 0)
+				return key;
+		}
+	});
+}
+
 function drawLine(data, options = {}) {
 	let scale = {
 		x: d3.scaleTime().rangeRound([0, options.width - options.margin.right - options.margin.left]),
@@ -57,15 +102,15 @@ d3.csv("slopegraph.csv", csv => {
 		return accumulator;
 	}, {});
 
-	for (let area in areas) {
-		let formatted = areas[area].map(({year, ...crimes}) => {
+	for (let [area, data] of Object.entries(areas)) {
+		let formattedLine = data.map(({year, ...crimes}) => {
 			return {
 				year: d3.timeParse("%Y")(year),
 				rate: Object.values(crimes).reduce((accumulator, item) => accumulator + item, 0),
 			}
 		});
 
-		drawLine(formatted, {
+		drawLine(formattedLine, {
 			container: document.body,
 			width: 960,
 			height: 500,
@@ -85,6 +130,14 @@ d3.csv("slopegraph.csv", csv => {
 				y: "rate",
 			},
 		});
+
+		let formattedSimulate = data[data.length - 1];
+		delete formattedSimulate["year"];
+		let simulation = simulate(formattedSimulate, {
+			size: 100,
+			population: POPULATION[area],
+		});
+		document.body.appendChild(document.createElement("pre")).textContent = JSON.stringify(simulation, null, 2);
 	}
 });
 
