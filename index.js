@@ -2,6 +2,19 @@
 
 "use strict";
 
+const CRIME = [
+	"Assault and Battery",
+	"Destruction of Property",
+	"Domestic Disturbance",
+	"Fraud",
+	"Homicide",
+	"Human Trafficking",
+	"Kidnapping",
+	"Resisting Arrest",
+	"Theft",
+	"Other",
+];
+
 // http://www.lapdonline.org/
 const POPULATION = {
 	"77th Street": 175000,
