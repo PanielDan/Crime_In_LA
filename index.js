@@ -93,8 +93,10 @@ d3.csv("slopegraph.csv", csv => {
 	let areas = csv.reduce((accumulator, row) => {
 		let {"Area.Name": area, "Year": year, ...crimes} = row;
 
-		for (let crime in crimes)
-			crimes[crime] = parseInt(crimes[crime]);
+		for (let crime in crimes) {
+			crimes[CRIME[crime]] = parseInt(crimes[crime]);
+			delete crimes[crime];
+		}
 
 		if (!(area in accumulator))
 			accumulator[area] = [];
