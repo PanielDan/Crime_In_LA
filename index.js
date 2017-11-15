@@ -28,22 +28,10 @@ const POPULATION = {
 };
 
 function simulate(data, options = {}) {
-	let total = Object.values(data).reduce((accumulator, item) => accumulator + item, 0);
-	let normalized = Object.entries(data).reduce((accumulator, [key, value]) => {
-		accumulator[key] = value / total;
-		return accumulator;
-	}, {});
-
 	return (new Array(options.size)).fill(0).map((item, i) => {
-		if (Math.random() > total / options.population)
+		if (Math.random() > sum(data) / options.population)
 			return null;
-
-		let random = Math.random();
-		for (let key in normalized) {
-			random -= normalized[key];
-			if (random <= 0)
-				return key;
-		}
+		return weightedRandom(data);
 	});
 }
 
@@ -106,7 +94,7 @@ d3.csv("slopegraph.csv", csv => {
 		let formattedLine = data.map(({year, ...crimes}) => {
 			return {
 				year: d3.timeParse("%Y")(year),
-				rate: Object.values(crimes).reduce((accumulator, item) => accumulator + item, 0),
+				rate: sum(crimes),
 			}
 		});
 
