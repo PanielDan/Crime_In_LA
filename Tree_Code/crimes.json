@@ -1,0 +1,229 @@
+{
+    "name": "CRIME TYPES",
+    "parent": null,
+    "children": 
+    [
+        {
+            "name": "ASSAULT AND BATTERY",
+            "parent": "CRIME TYPES",
+            "children": 
+            [
+                {
+                    "name": "ANIMAL CRUELTY",
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "ASSAULT WITH A DEADLY WEAPON",
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "ASSAULT",
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "BATTERY WITH SEXUAL CONTACT",
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "CHILD ABUSE",
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "LYNCHING" ,
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "RAPE",
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "SEXUAL CRIME",
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "SHOTS FIRED",
+                    "parent": "ASSAULT AND BATTERY"
+                },
+                {
+                    "name": "THREAT",
+                    "parent": "ASSAULT AND BATTERY"
+                }
+            ]
+        },
+        {
+            "name": "DESTRUCTION OF PROPERTY",
+            "parent": "CRIME TYPES",
+            "children":
+            [
+                {
+                    "name": "ARSON",
+                    "parent": "DESTRUCTION OF PROPERTY"
+                },
+                {
+                    "name": "BOMB SCARE",
+                    "parent": "DESTRUCTION OF PROPERTY"
+                },
+                {
+                    "name": "VANDALISM",
+                    "parent": "DESTRUCTION OF PROPERTY"
+                }
+            ]   
+        },
+        {
+            "name": "DOMESTIC DISTURBANCE",
+            "parent": "CRIME TYPES",
+            "children":
+            [
+                {
+                    "name": "CHILD ANNOYANCE",
+                    "parent": "DOMESTIC DISTURBANCE"
+                },
+                {
+                    "name": "CHILD NEGLECT",
+                    "parent": "DOMESTIC DISTURBANCE"
+                },
+                {
+                    "name": "DISTURBING THE PEACE",
+                    "parent": "DOMESTIC DISTURBANCE"
+                },
+                {
+                    "name": "LEWD CONDUCT",
+                    "parent": "DOMESTIC DISTURBANCE"
+                },
+                {
+                    "name": "PEEPING TOM",
+                    "parent": "DOMESTIC DISTURBANCE"
+                },
+                {
+                    "name": "STALKING",
+                    "parent": "DOMESTIC DISTURBANCE"
+                },
+                {
+                    "name": "TRESPASSING",
+                    "parent": "DOMESTIC DISTURBANCE"
+                },
+                {
+                    "name": "PROWLER",
+                    "parent": "DOMESTIC DISTURBANCE"
+                }
+            ]
+        },
+        {
+            "name": "FRAUD",
+            "parent": "CRIME TYPES",
+            "children":
+            [
+                {
+                    "name": "BRIBERY",
+                    "parent": "FRAUD"
+                },
+                {
+                    "name": "COUNTERFEIT",
+                    "parent": "FRAUD"
+                },
+                {
+                    "name": "FORGERY",
+                    "parent": "FRAUD"
+                },
+                {
+                    "name": "FRAUD",
+                    "parent": "FRAUD"
+                },
+                {
+                    "name": "IDENTITY THEFT",
+                    "parent": "FRAUD"
+                },
+                {
+                    "name": "REPLICA FIREARMS",
+                    "parent": "FRAUD"
+                }
+            ]
+        },
+        {
+            "name":"HOMICIDE",
+            "parent": "CRIME TYPES",
+            "children":
+            [
+                {
+                    "name": "HOMICIDE",
+                    "parent": "HOMICIDE"
+                },
+                {
+                    "name": "MANSLAUGHTER",
+                    "parent": "HOMICIDE"
+                }
+            ]
+        },
+        {
+            "name": "THEFT",
+            "parent": "CRIME TYPES",
+            "children":
+            [
+                {
+                    "name":"BURGLARY",
+                    "parent": "THEFT"
+                },
+                {
+                    "name":"ROBBERY",
+                    "parent": "THEFT"
+                }
+            ]
+        },
+        {
+            "name": "HUMAN TRAFFICKING",
+            "parent": "CRIME TYPES",
+            "children": [
+                {
+                    "name": "PIMPING",
+                    "parent": "HUMAN TRAFFICKING"
+                },
+                {
+                    "name": "EXTORTION",
+                    "parent": "HUMAN TRAFFICKING"
+                },
+                {
+                    "name": "KIDNAPPING",
+                    "parent": "HUMAN TRAFFICKING"
+                }
+            ]
+        },
+        {
+            "name": "RESISTING ARREST",
+            "parent": "CRIME TYPES"
+        },
+        {
+            "name": "OTHER",
+            "parent": "CRIME TYPES",
+            "children": [
+                {
+                    "name": "CONSPIRACY",
+                    "parent": "OTHER"
+                },
+                {
+                    "name": "CONTEMPT OF COURT",
+                    "parent": "OTHER"
+                },
+                {
+                    "name": "CRIME AGAINST CHILD",
+                    "parent": "OTHER"
+                },
+                {
+                    "name": "DRUGS, TO A MINOR",
+                    "parent": "OTHER"
+                },
+                {
+                    "name": "RECKLESS DRIVING",
+                    "parent": "OTHER"
+                },
+                {
+                    "name": "VIOLATION OF COURT ORDER",
+                    "parent": "OTHER"
+                },
+                {
+                    "name": "WEAPONS POSESSION",
+                    "parent": "OTHER"
+                }
+            ]
+        }
+    ]
+}
