@@ -57,14 +57,14 @@ d3.csv("slopegraph.csv", csv => {
 	}, {});
 
 	for (let [area, data] of Object.entries(areas)) {
-		let formattedLine = data.map(({year, ...crimes}) => {
+		let formattedSlope = data.map(({year, ...crimes}) => {
 			return {
 				year: d3.timeParse("%Y")(year),
 				rate: sum(crimes),
 			}
 		});
 
-		slope(formattedLine, {
+		slope(formattedSlope, {
 			container: document.body,
 			width: 960,
 			height: 500,
@@ -78,7 +78,9 @@ d3.csv("slopegraph.csv", csv => {
 				x: true,
 				y: true,
 			},
-			domain: {},
+			domain: {
+				y: [0, Math.max(...formattedSlope.map(item => item.rate))],
+			},
 			key: {
 				x: "year",
 				y: "rate",
@@ -93,4 +95,18 @@ d3.csv("slopegraph.csv", csv => {
 		});
 		document.body.appendChild(document.createElement("pre")).textContent = JSON.stringify(simulation, null, 2);
 	}
+});
+
+d3.csv("heatmap_2015.csv", csv => {
+	let formattedHeat = csv.map(item => {
+		return {
+			crime: CRIME[parseInt(item["Consolidated.Description"]) - 1],
+			latitude: parseFloat(item["Latitude"]),
+			longitude: parseFloat(item["Longitude"]),
+			hour: parseInt(item["Hour"]),
+			day: parseInt(item["Day"]),
+			month: parseInt(item["Mo"]),
+		};
+	});
+	console.log(formattedHeat);
 });
