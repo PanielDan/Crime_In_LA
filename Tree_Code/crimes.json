@@ -1,13 +1,11 @@
 {
     "name": "CRIME TYPES",
     "parent": null,
-    "children": 
-    [
+    "children": [
         {
             "name": "ASSAULT AND BATTERY",
             "parent": "CRIME TYPES",
-            "children": 
-            [
+            "children": [
                 {
                     "name": "ANIMAL CRUELTY",
                     "parent": "ASSAULT AND BATTERY"
@@ -29,7 +27,7 @@
                     "parent": "ASSAULT AND BATTERY"
                 },
                 {
-                    "name": "LYNCHING" ,
+                    "name": "LYNCHING",
                     "parent": "ASSAULT AND BATTERY"
                 },
                 {
@@ -53,8 +51,7 @@
         {
             "name": "DESTRUCTION OF PROPERTY",
             "parent": "CRIME TYPES",
-            "children":
-            [
+            "children": [
                 {
                     "name": "ARSON",
                     "parent": "DESTRUCTION OF PROPERTY"
@@ -67,13 +64,12 @@
                     "name": "VANDALISM",
                     "parent": "DESTRUCTION OF PROPERTY"
                 }
-            ]   
+            ]
         },
         {
             "name": "DOMESTIC DISTURBANCE",
             "parent": "CRIME TYPES",
-            "children":
-            [
+            "children": [
                 {
                     "name": "CHILD ANNOYANCE",
                     "parent": "DOMESTIC DISTURBANCE"
@@ -111,8 +107,7 @@
         {
             "name": "FRAUD",
             "parent": "CRIME TYPES",
-            "children":
-            [
+            "children": [
                 {
                     "name": "BRIBERY",
                     "parent": "FRAUD"
@@ -140,10 +135,9 @@
             ]
         },
         {
-            "name":"HOMICIDE",
+            "name": "HOMICIDE",
             "parent": "CRIME TYPES",
-            "children":
-            [
+            "children": [
                 {
                     "name": "HOMICIDE",
                     "parent": "HOMICIDE"
@@ -157,14 +151,13 @@
         {
             "name": "THEFT",
             "parent": "CRIME TYPES",
-            "children":
-            [
+            "children": [
                 {
-                    "name":"BURGLARY",
+                    "name": "BURGLARY",
                     "parent": "THEFT"
                 },
                 {
-                    "name":"ROBBERY",
+                    "name": "ROBBERY",
                     "parent": "THEFT"
                 }
             ]
