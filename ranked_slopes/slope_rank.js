@@ -1,4 +1,4 @@
-(function() {
+import { sum } from '../utilities'
 
 "use strict";
 
@@ -39,14 +39,6 @@ const POPULATION = {
 	"West Valley": 196840,
 	"Wilshire":    251000,
 };
-
-function simulate(data, options = {}) {
-	return (new Array(options.size)).fill(0).map((item, i) => {
-		if (Math.random() > sum(data) / options.population)
-			return null;
-		return weightedRandom(data);
-	});
-}
 
 function drawLine(data, options = {}) {
 	let scale = {
@@ -131,15 +123,5 @@ d3.csv("slopegraph.csv", csv => {
 				y: "rate",
 			},
 		});
-
-		let formattedSimulate = data[data.length - 1];
-		delete formattedSimulate["year"];
-		let simulation = simulate(formattedSimulate, {
-			size: 100,
-			population: POPULATION[area],
-		});
-		document.body.appendChild(document.createElement("pre")).textContent = JSON.stringify(simulation, null, 2);
 	}
 });
-
-})();
