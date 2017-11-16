@@ -1,6 +1,7 @@
 import {sum} from "./utilities.js";
 import {slope} from "./slope.js";
 import {simulate} from "./simulate.js";
+import Tree from "./Tree.js";
 
 const CRIME = [
 	"Assault and Battery",
@@ -109,4 +110,18 @@ d3.csv("heatmap_2015.csv", csv => {
 		};
 	});
 	console.log(formattedHeat);
+});
+
+d3.json("types.json", json => {
+	new Tree(json, {
+		container: document.body,
+		width: 1200,
+		height: 800,
+		margin: {
+			top: 15,
+			right: 90,
+			bottom: 15,
+			left: 135,
+		},
+	})
 });

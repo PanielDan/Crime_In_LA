@@ -18,3 +18,7 @@ export function weightedRandom(weights) {
 			return Array.isArray(weights) ? parseInt(key) : key;
 	}
 }
+
+export function diagonal(a, b) {
+	return `M ${a.y} ${a.x} C ${(a.y + b.y) / 2} ${a.x}, ${(a.y + b.y) / 2} ${b.x}, ${b.y} ${b.x}`;
+}
