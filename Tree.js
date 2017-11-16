@@ -1,4 +1,4 @@
-import {diagonal} from "./utilities.js";
+import {diagonal} from "./Utilities.js";
 
 export default class Tree {
 	constructor(data, options = {}) {
