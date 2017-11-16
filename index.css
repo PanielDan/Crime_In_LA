@@ -11,3 +11,15 @@ svg.line > .chart path {
 	fill: none;
 	stroke: currentColor;
 }
+
+svg.tree .node circle {
+	fill: white;
+	stroke: darkred;
+	stroke-width: 2px;
+}
+
+svg.tree .link {
+	fill: none;
+	stroke: lightgrey;
+	stroke-width: 2px;
+}

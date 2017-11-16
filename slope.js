@@ -11,7 +11,7 @@ export function slope(data, options = {}) {
 		.x(d => scale.x(d[options.key.x]))
 		.y(d => scale.y(d[options.key.y]));
 
-	let container = d3.select(options.container || article);
+	let container = d3.select(options.container || "body");
 
 	let svg = container.append("svg")
 		.attr("viewBox", `0 0 ${options.width}, ${options.height}`)
