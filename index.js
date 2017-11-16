@@ -90,11 +90,10 @@ d3.csv("slopegraph.csv", csv => {
 
 		let formattedSimulate = data[data.length - 1];
 		delete formattedSimulate["year"];
-		let simulation = new Simulate(formattedSimulate, {
+		new Simulate(formattedSimulate, {
 			size: 100,
 			population: POPULATION[area],
 		});
-		document.body.appendChild(document.createElement("pre")).textContent = JSON.stringify(simulation, null, 2);
 	}
 });
 
