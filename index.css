@@ -7,18 +7,28 @@ body {
 	     tab-size: 2;
 }
 
+svg text {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+}
+
 svg.line > .chart path {
 	fill: none;
 	stroke: currentColor;
 }
 
-svg.tree .node circle {
-	fill: white;
+svg.tree >.chart .node * {
+	cursor: pointer;
+}
+
+svg.tree >.chart .node circle {
 	stroke: darkred;
 	stroke-width: 2px;
 }
 
-svg.tree .link {
+svg.tree >.chart .link {
 	fill: none;
 	stroke: lightgrey;
 	stroke-width: 2px;

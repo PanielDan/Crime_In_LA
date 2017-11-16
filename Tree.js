@@ -2,6 +2,9 @@ import {diagonal} from "./Utilities.js";
 
 export default class Tree {
 	constructor(data, options = {}) {
+		this._boundCollapse = this._collapse.bind(this);
+		this._boundHandleClick = this._handleClick.bind(this);
+
 		let container = d3.select(options.container || "body");
 
 		let svg = container.append("svg")
@@ -9,24 +12,28 @@ export default class Tree {
 			.attr("class", "tree");
 
 		this._group = svg.append("g")
+			.attr("class", "chart")
 			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`);
 
 		let width = options.width - options.margin.right - options.margin.left;
 		let height = options.height - options.margin.top - options.margin.bottom;
 
-		let hierarchy = d3.hierarchy(data, d => d.children);
-		hierarchy.x0 = height / 2;
-		hierarchy.y0 = 0;
+		this._hierarchy = d3.hierarchy(data, d => d.children);
+		this._hierarchy.x0 = height / 2;
+		this._hierarchy.y0 = 0;
+		this._tree = d3.tree().size([height, width]);
 
-		this._tree = d3.tree().size([height, width])(hierarchy);
+		this._update(this._tree(this._hierarchy));
 
-		this._update(hierarchy);
+		this._hierarchy.children.forEach(this._boundCollapse);
+		this._update(this._tree(this._hierarchy));
 	}
 
 	_update(node) {
 		const duration = 400;
 
-		let descendants = this._tree.descendants();
+		let tree = this._tree(this._hierarchy);
+		let descendants = tree.descendants();
 		let links = descendants.slice(1);
 
 		descendants.forEach(d => d.y = d.depth * 180);
@@ -39,14 +46,14 @@ export default class Tree {
 				.attr("class", "node")
 				.attr("transform", d => `translate(${node.y0}, ${node.x0})`)
 				.attr("opacity", 0)
-				.on("click", this._handleClick.bind(this));
+				.on("click", this._boundHandleClick);
 		nodeGroupsEnter.append("circle")
 			.attr("r", 1e-6)
-			.style("fill", d =>  d._children ? "darkred" : "#fff");
+			.style("fill", d =>  d.__savedChildren ? "darkred" : "white");
 		nodeGroupsEnter.append("text")
 			.attr("dy", "0.35em")
-			.attr("x", d =>  (d.children || d._children) ? -13 : 13)
-			.attr("text-anchor", d => (d.children || d._children) ? "end" : "start")
+			.attr("x", d =>  (d.children || d.__savedChildren) ? -13 : 13)
+			.attr("text-anchor", d => (d.children || d.__savedChildren) ? "end" : "start")
 			.text(d => d.data.name);
 
 		let nodeGroupsUpdate = nodeGroupsEnter.merge(nodeGroups);
@@ -56,8 +63,7 @@ export default class Tree {
 			.select("circle")
 				.attr("r", 8);
 		nodeGroupsUpdate.select("circle")
-			.style("fill", d => d._children ? "darkred" : "#fff")
-			.attr("cursor", "pointer");
+			.style("fill", d => d.__savedChildren ? "darkred" : "white");
 
 		let nodeGroupsExit = nodeGroups.exit()
 			.transition().duration(duration)
@@ -68,7 +74,7 @@ export default class Tree {
 			.attr("r", 1e-6);
 
 		let linkPaths = this._group.selectAll("path.link")
-			.data(links, d => d.id);
+			.data(links, (d, i) => d.id || (d.id = i));
 
 		let linkPathsEnter = linkPaths.enter()
 			.insert("path", "g")
@@ -106,18 +112,18 @@ export default class Tree {
 		if (!d.children)
 			return;
 
-		d._children = d.children
-		d._children.forEach(this._collapse)
-		d.children = null
+		d.__savedChildren = d.children;
+		d.__savedChildren.forEach(this._boundCollapse);
+		d.children = null;
 	}
 
 	_handleClick(d) {
 		if (d.children) {
-			d._children = d.children;
+			d.__savedChildren = d.children;
 			d.children = null;
 		} else {
-			d.children = d._children;
-			d._children = null;
+			d.children = d.__savedChildren;
+			d.__savedChildren = null;
 		}
 
 		this._update(d);
