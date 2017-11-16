@@ -19,16 +19,16 @@ svg.line > .chart path {
 	stroke: currentColor;
 }
 
-svg.tree >.chart .node * {
+svg.tree > .chart .node * {
 	cursor: pointer;
 }
 
-svg.tree >.chart .node circle {
+svg.tree > .chart .node circle {
 	stroke: darkred;
 	stroke-width: 2px;
 }
 
-svg.tree >.chart .link {
+svg.tree > .chart .link {
 	fill: none;
 	stroke: lightgrey;
 	stroke-width: 2px;

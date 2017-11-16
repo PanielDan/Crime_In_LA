@@ -11,7 +11,7 @@ export default class Tree {
 			.attr("viewBox", `0 0 ${options.width} ${options.height}`)
 			.attr("class", "tree");
 
-		this._group = svg.append("g")
+		this._chart = svg.append("g")
 			.attr("class", "chart")
 			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`);
 
@@ -38,7 +38,7 @@ export default class Tree {
 
 		descendants.forEach(d => d.y = d.depth * 180);
 
-		let nodeGroups = this._group.selectAll("g.node")
+		let nodeGroups = this._chart.selectAll("g.node")
 			.data(descendants, (d, i) => d.id || (d.id = i));
 
 		let nodeGroupsEnter = nodeGroups.enter()
@@ -73,7 +73,7 @@ export default class Tree {
 		nodeGroupsExit.select("circle")
 			.attr("r", 1e-6);
 
-		let linkPaths = this._group.selectAll("path.link")
+		let linkPaths = this._chart.selectAll("path.link")
 			.data(links, (d, i) => d.id || (d.id = i));
 
 		let linkPathsEnter = linkPaths.enter()
