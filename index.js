@@ -1,6 +1,6 @@
-import {sum} from "./utilities.js";
-import {slope} from "./slope.js";
-import {simulate} from "./simulate.js";
+import {sum} from "./Utilities.js";
+import Slope from "./Slope.js";
+import Simulate from "./Simulate.js";
 import Tree from "./Tree.js";
 
 const CRIME = [
@@ -65,7 +65,7 @@ d3.csv("slopegraph.csv", csv => {
 			}
 		});
 
-		slope(formattedSlope, {
+		new Slope(formattedSlope, {
 			container: document.body,
 			width: 960,
 			height: 500,
@@ -90,7 +90,7 @@ d3.csv("slopegraph.csv", csv => {
 
 		let formattedSimulate = data[data.length - 1];
 		delete formattedSimulate["year"];
-		let simulation = simulate(formattedSimulate, {
+		let simulation = new Simulate(formattedSimulate, {
 			size: 100,
 			population: POPULATION[area],
 		});
