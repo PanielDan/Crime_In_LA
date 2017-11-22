@@ -43,24 +43,31 @@ const POPULATION = {
 
 d3.csv("slopegraph.csv", csv => {
 	let areas = csv.reduce((accumulator, row) => {
-		let {"Area.Name": area, "Year": year, ...crimes} = row;
-
-		for (let crime in crimes) {
-			crimes[CRIME[crime]] = parseInt(crimes[crime]);
-			delete crimes[crime];
+		let area = row["Area.Name"];
+		let year = row["Year"];
+		let crimes = {};
+		for (let crime in row) {
+			if (crime !== "Area.Name" && crime !== "Year")
+				crimes[CRIME[crime]] = parseInt(row[crime]);
 		}
 
 		if (!(area in accumulator))
 			accumulator[area] = [];
 
-		accumulator[area].push({year, ...crimes});
+		crimes.year = year;
+		accumulator[area].push(crimes);
 		return accumulator;
 	}, {});
 
 	for (let [area, data] of Object.entries(areas)) {
-		let formattedSlope = data.map(({year, ...crimes}) => {
+		let formattedSlope = data.map((item) => {
+			let crimes = [];
+			for (let key in item) {
+				if (key !== "year")
+					crimes.push(item[key]);
+			}
 			return {
-				year: d3.timeParse("%Y")(year),
+				year: d3.timeParse("%Y")(item.year),
 				rate: sum(crimes),
 			}
 		});

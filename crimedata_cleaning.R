@@ -6,7 +6,6 @@
 #import libraries
 library(tidyr)
 library(dplyr)
-library(reshape2)
 library(lubridate)
 library(ggplot2)
 library(data.table)
@@ -74,57 +73,102 @@ df$Crime.Code.4 = as.factor(df$Crime.Code.4)
 #add day of the week, month, and year
 df$Weekday = weekdays(df$Date.Occurred)
 df$Month = months(df$Date.Occurred)
-df$Year = format(df$Date.Occurred, '%Y')
 
 #create testing dataset 
-dftest = df[1:100,c(2:6,8:9,13,19,26:30)]
+dftest = df[1:100,2:29]
+dftest = dftest[,-9]
+dftest = dftest[,-9]
+dftest = dftest[,-9]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-10]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+dftest = dftest[,-11]
+
 write.csv(dftest, "test.csv", row.names = FALSE)
 
 #consolidate crimes - lots of cleanup here!
 dfcrimes = df
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("943","236","622","623","624","625","626","627","230","231","860","235","435","436","121","122","815","821","820","250","251","753","928","930")] = "Assault and Battery"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("648","755","926","924","740","745")] = "Destruction of Property"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("813","237","870","880","886","884","882","762","956","432","932","933","850","763","888")] = "Domestic Disturbance"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("653","654","942","651","652","660","649","354")] = "Fraud"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("110","113")] = "Homicide"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("940","805","806")] = "Human Trafficking"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("910","920","922")] = "Kidnapping"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("944","903","812","865","434","439","949","433","647","661","890","946","954","438","931","830","840","948","810","900","901","902","906","761","756")] = "Miscellaneous White-Collar Crime"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("437")] = "Resisting Arrest"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("310","320","330","410","210","220","331","341","343","345","347","349","350","351","352","353","420","421","440","441","442","443","444","445","446","450","451","452","470","471","473","474","475","480","485","487","510","520","662","664","666","668","670","950","951")] = "Theft"
-dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("")] = "Unspecified"
-dfcrimes$Consolidated.Description = as.factor(dfcrimes$Consolidated.Description)
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "CRUELTY TO ANIMALS"] = "ANIMAL CREULTY"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "ARSON"] = "ARSON"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("236","622","623","624","625","626","627")] = "ASSAULT"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("230","231")] = "ASSAULT WITH A DEADLY WEAPON"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "BATTERY WITH SEXUAL CONTACT"] = "BATTERY WITH SEXUAL CONTACT"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "BOMB SCARE"] = "BOMB SCARE" 
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "BRIBERY"] = "BRIBERY"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("310","320","330","410")] = "BURGLARY"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "CHILD ABUSE (PHYSICAL) - AGGRAVATED ASSAULT"] = "CHILD ABUSE"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "CHILD ANNOYING (17YRS & UNDER)"] = "CHILD ANNOYANCE"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("237","870")] = "CHILD NEGLECT"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "CONSPIRACY"] = "CONSPIRACY"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "CONTEMPT OF COURT"] = "CONTEMPT OF COURT"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("651","652","660")] = "COUNTERFEIT"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "CRM AGNST CHLD (13 OR UNDER) (14-15 & SUSP 10 YRS OLDER)0060"] = "CRIME AGAINST CHILD"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("880","886")] = "DISTURBING THE PEACE"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "DRUGS, TO A MINOR"] = "DRUGS, TO A MINOR"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "EXTORTION"] = "EXTORTION" 
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "DOCUMENT FORGERY / STOLEN FELONY"] = "FORGERY"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("653","654")] = "FRAUD"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "CRIMINAL HOMICIDE"] = "HOMICIDE"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code.Description == "THEFT OF IDENTITY"] = "IDENTITY THEFT" 
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("910","920","922")] = "KIDNAPPING"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("762","956")] = "LEWD CONDUCT"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("435","436")] = "LYNCHING"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("113")] = "MANSLAUGHTER"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("432","433","647","661","890","924","926","946","954")] = "MISCELLANEOUS CRIME"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("932")] = "PEEPING TOM"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("805","806")] = "PIMPING"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("933")] = "PROWLER"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("121","122","815","821")] = "RAPE"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("438")] = "RECKLESS DRIVING"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("931")] = "REPLICA FIREARMS"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("437")] = "RESISTING ARREST"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("210","220","331","341","343","345","347","349","350","351","352","353","420","421","440","441","442","443","444","445","446","450","451","452","470","471","473","474","475","480","485","487","510","520","662","664","666","668","670","950","951")] = "ROBBERY"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("850","820","830","840","948","810")] = "SEXUAL CRIME"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("250","251","753")] = "SHOTS FIRED"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("763")] = "STALKING"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("928","930")] = "THREAT"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("888")] = "TRESPASSING"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("740","745")] = "VANDLISM"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("900","901","902","906")] = "VIOLATION OF COURT ORDER"
+dfcrimes$Consolidated.Description[dfcrimes$Crime.Code %in% c("761","756")] = "WEAPONS POSESSION"
 
 
-#dataframes or entries with valid lat/lon
-df.l = df[df$Latitude != 0,]
-dfcrimes.l = dfcrimes[dfcrimes$Latitude != 0,]
-
-#data for only 2010 and 2015
-df.2010 = df[df$Year %in% c("2010"),]
-df.2015 = df[df$Year %in% c("2015"),]
-dfcrimes.2010 = dfcrimes[dfcrimes$Year %in% c("2010"),]
-dfcrimes.2015 = dfcrimes[dfcrimes$Year %in% c("2015"),]
-df.l.2010 = df.l[df.l$Year %in% c("2010"),]
-df.l.2015 = df.l[df.l$Year %in% c("2015"),]
-dfcrimes.l.2010 = dfcrimes.l[dfcrimes.l$Year %in% c("2010"),]
-dfcrimes.l.2015 = dfcrimes.l[dfcrimes.l$Year %in% c("2015"),]
 #data for heat maps
-#2010
-df.hm.2010 = dfcrimes.l.2010[,c("Date.Reported","Date.Occurred","Time.Occurred","Crime.Code","Latitude","Longitude","Weekday","Month","Year","Consolidated.Description")]
-write.csv(df.hm.2010, "heatmap_2010.csv", row.names = FALSE)
 
-#data for simulation - count the data for 2010 and 2015 in each crime category 
-df.sim = dfcrimes.reduced[,c(30:31)]
-df.sim.m = dcast(df.sim, Year~Consolidated.Description)
-write.csv(df.sim.m, "simulation.csv", row.names = FALSE)
 
-#data for interactive slope graph 
-df.sg = dfcrimes[,c(4:6,8,28:31)]
-df.sg = df.sg[-1]
-df.sg.m = dcast(df.sg, Area.Name + Year~Consolidated.Description)
-write.csv(df.sg.m, "slopegraph.csv", row.names = FALSE)
 
-#data for bar charts - also coutns?
-df.bc = dfcrimes.reduced[,c(2:6,8,13,19,28:31)]
-write.csv(df.bc, "barchart.csv", row.names = FALSE)
+#data for simulation
+
+
+
+#data for interactive slope graph
+
+
+
+#data for bar charts
+
+
+
+#dataframe for downtown, south LA, and West LA
+dfDT = df[df$Area.Name == "Central",]
+dfSO = df[df$Area.Name == "77th Street",]
+dfWE = df[df$Area.Name == "West LA",]
+
+
+#dataframe only for entries with valid lat/lon
+dfloc = df[df$Latitude != 0,]
+
+#dataframe for entries with valid lat/lon in DT, South LA and West LA
+dfDT_loc = dfloc[dfloc$Area.Name == "Central",]
+dfSO_loc = dfloc[dfloc$Area.Name == "77th Street",]
+dfWE_loc = dfloc[dfloc$Area.Name == "West ",]
+
+
