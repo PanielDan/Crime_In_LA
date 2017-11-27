@@ -1,4 +1,4 @@
-export default class Slope {
+export default class MultiSlope {
 	constructor(data, options = {}) {
 		let scale = {
 			x: d3.scaleTime().rangeRound([0, options.width - options.margin.right - options.margin.left]),

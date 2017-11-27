@@ -2,6 +2,7 @@ import {sum} from "./Utilities.js";
 import Slope from "./Slope.js";
 import Simulate from "./Simulate.js";
 import Tree from "./Tree.js";
+import MultiSlope from "./MultiSlope/MultiSlope.js"
 
 const CRIME = [
 	"Assault and Battery",
@@ -58,6 +59,29 @@ d3.csv("slopegraph.csv", csv => {
 		accumulator[area].push(crimes);
 		return accumulator;
 	}, {});
+
+	new MultiSlope(formattedSlope, {
+		container: document.body,
+		width: 960,
+		height: 500,
+		margin: {
+			top: 10,
+			right: 20,
+			bottom: 25,
+			left: 50,
+		},
+		axis: {
+			x: true,
+			y: true,
+		},
+		domain: {
+			y: [0, Math.max(...formattedSlope.map(item => item.rate))],
+		},
+		key: {
+			x: "year",
+			y: "rate",
+		},
+	});
 
 	for (let [area, data] of Object.entries(areas)) {
 		let formattedSlope = data.map((item) => {
