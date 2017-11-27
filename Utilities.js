@@ -22,3 +22,13 @@ export function weightedRandom(weights) {
 export function diagonal(a, b) {
 	return `M ${a.y} ${a.x} C ${(a.y + b.y) / 2} ${a.x}, ${(a.y + b.y) / 2} ${b.x}, ${b.y} ${b.x}`;
 }
+
+//Slices area data variable to only return the specified district w/ years [2010,2015]
+export function SliceDistrict(data, district) {
+	let slice = data[district];
+	let districtData = slice.filter(dataRow => {
+		return dataRow.year < 2016;
+	});
+
+	return districtData;
+}

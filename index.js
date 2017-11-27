@@ -1,4 +1,4 @@
-import {sum} from "./Utilities.js";
+import {sum, SliceDistrict} from "./Utilities.js";
 import Slope from "./Slope.js";
 import Simulate from "./Simulate.js";
 import Tree from "./Tree.js";
@@ -55,12 +55,14 @@ d3.csv("slopegraph.csv", csv => {
 		if (!(area in accumulator))
 			accumulator[area] = [];
 
-		crimes.year = year;
+		crimes.year = parseInt(year);
 		accumulator[area].push(crimes);
 		return accumulator;
 	}, {});
 
-	new MultiSlope(formattedSlope, {
+	let district = SliceDistrict(areas, "Central");
+
+	new MultiSlope(district, {
 		container: document.body,
 		width: 960,
 		height: 500,
@@ -75,11 +77,18 @@ d3.csv("slopegraph.csv", csv => {
 			y: true,
 		},
 		domain: {
-			y: [0, Math.max(...formattedSlope.map(item => item.rate))],
+			y: [0, district.map(d => {
+				let max = 0;
+				let keys = Object.keys(d);
+				for(let key in keys) {
+					max = Math.max(max, d[key]);
+				}
+				return max;
+			}).reduce((max, currVal) => Math.max(max, currVal))],
 		},
 		key: {
 			x: "year",
-			y: "rate",
+			y: CRIME,
 		},
 	});
 
