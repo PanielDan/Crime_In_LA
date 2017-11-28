@@ -1,4 +1,4 @@
-import {sum, SliceDistrict} from "./Utilities.js";
+import {sum, SliceDistrict, MaxOfSliceDistrict} from "./Utilities.js";
 import Slope from "./Slope.js";
 import Simulate from "./Simulate.js";
 import Tree from "./Tree.js";
@@ -61,7 +61,6 @@ d3.csv("slopegraph.csv", csv => {
 	}, {});
 
 	let district = SliceDistrict(areas, "Central");
-
 	new MultiSlope(district, {
 		container: document.body,
 		width: 960,
@@ -77,90 +76,80 @@ d3.csv("slopegraph.csv", csv => {
 			y: true,
 		},
 		domain: {
-			y: [0, district.map(d => {
-				let max = 0;
-				let keys = Object.keys(d);
-				for(let key in keys) {
-					max = Math.max(max, d[key]);
-				}
-				return max;
-			}).reduce((max, currVal) => Math.max(max, currVal))],
-		},
-		key: {
-			x: "year",
-			y: CRIME,
+			y: MaxOfSliceDistrict(district),
+			z: CRIME
 		},
 	});
-
-	for (let [area, data] of Object.entries(areas)) {
-		let formattedSlope = data.map((item) => {
-			let crimes = [];
-			for (let key in item) {
-				if (key !== "year")
-					crimes.push(item[key]);
-			}
-			return {
-				year: d3.timeParse("%Y")(item.year),
-				rate: sum(crimes),
-			}
-		});
-
-		new Slope(formattedSlope, {
-			container: document.body,
-			width: 960,
-			height: 500,
-			margin: {
-				top: 10,
-				right: 20,
-				bottom: 25,
-				left: 50,
-			},
-			axis: {
-				x: true,
-				y: true,
-			},
-			domain: {
-				y: [0, Math.max(...formattedSlope.map(item => item.rate))],
-			},
-			key: {
-				x: "year",
-				y: "rate",
-			},
-		});
-
-		let formattedSimulate = data[data.length - 1];
-		delete formattedSimulate["year"];
-		new Simulate(formattedSimulate, {
-			size: 100,
-			population: POPULATION[area],
-		});
-	}
 });
+// 	for (let [area, data] of Object.entries(areas)) {
+// 		let formattedSlope = data.map((item) => {
+// 			let crimes = [];
+// 			for (let key in item) {
+// 				if (key !== "year")
+// 					crimes.push(item[key]);
+// 			}
+// 			return {
+// 				year: d3.timeParse("%Y")(item.year),
+// 				rate: sum(crimes),
+// 			}
+// 		});
 
-d3.csv("heatmap_2015.csv", csv => {
-	let formattedHeat = csv.map(item => {
-		return {
-			crime: CRIME[parseInt(item["Consolidated.Description"]) - 1],
-			latitude: parseFloat(item["Latitude"]),
-			longitude: parseFloat(item["Longitude"]),
-			hour: parseInt(item["Hour"]),
-			day: parseInt(item["Day"]),
-			month: parseInt(item["Mo"]),
-		};
-	});
-	console.log(formattedHeat);
-});
+// 		new Slope(formattedSlope, {
+// 			container: document.body,
+// 			width: 960,
+// 			height: 500,
+// 			margin: {
+// 				top: 10,
+// 				right: 20,
+// 				bottom: 25,
+// 				left: 50,
+// 			},
+// 			axis: {
+// 				x: true,
+// 				y: true,
+// 			},
+// 			domain: {
+// 				y: [0, Math.max(...formattedSlope.map(item => item.rate))],
+// 			},
+// 			key: {
+// 				x: "year",
+// 				y: "rate",
+// 			},
+// 		});
 
-d3.json("types.json", json => {
-	new Tree(json, {
-		container: document.body,
-		width: 1200,
-		height: 800,
-		margin: {
-			top: 15,
-			right: 90,
-			bottom: 15,
-			left: 135,
-		},
-	})
-});
+// 		let formattedSimulate = data[data.length - 1];
+// 		delete formattedSimulate["year"];
+// 		new Simulate(formattedSimulate, {
+// 			size: 100,
+// 			population: POPULATION[area],
+// 		});
+// 	}
+// });
+
+// d3.csv("heatmap_2015.csv", csv => {
+// 	let formattedHeat = csv.map(item => {
+// 		return {
+// 			crime: CRIME[parseInt(item["Consolidated.Description"]) - 1],
+// 			latitude: parseFloat(item["Latitude"]),
+// 			longitude: parseFloat(item["Longitude"]),
+// 			hour: parseInt(item["Hour"]),
+// 			day: parseInt(item["Day"]),
+// 			month: parseInt(item["Mo"]),
+// 		};
+// 	});
+// 	console.log(formattedHeat);
+// });
+
+// d3.json("types.json", json => {
+// 	new Tree(json, {
+// 		container: document.body,
+// 		width: 1200,
+// 		height: 800,
+// 		margin: {
+// 			top: 15,
+// 			right: 90,
+// 			bottom: 15,
+// 			left: 135,
+// 		},
+// 	})
+// });
