@@ -60,6 +60,50 @@ d3.csv("slopegraph.csv", csv => {
 		return accumulator;
 	}, {});
 
+	for (let [area, data] of Object.entries(areas)) {
+		let formattedSlope = data.map((item) => {
+			let crimes = [];
+			for (let key in item) {
+				if (key !== "year")
+					crimes.push(item[key]);
+			}
+			return {
+				year: d3.timeParse("%Y")(item.year),
+				rate: sum(crimes),
+			}
+		});
+
+		new Slope(formattedSlope, {
+			container: document.body,
+			width: 960,
+			height: 500,
+			margin: {
+				top: 10,
+				right: 20,
+				bottom: 25,
+				left: 50,
+			},
+			axis: {
+				x: true,
+				y: true,
+			},
+			domain: {
+				y: [0, Math.max(...formattedSlope.map(item => item.rate))],
+			},
+			key: {
+				x: "year",
+				y: "rate",
+			},
+		});
+
+		let formattedSimulate = data[data.length - 1];
+		delete formattedSimulate["year"];
+		new Simulate(formattedSimulate, {
+			size: 100,
+			population: POPULATION[area],
+		});
+	}
+
 	let district = SliceDistrict(areas, "Central");
 	new MultiSlope(district, {
 		container: document.body,
@@ -81,75 +125,31 @@ d3.csv("slopegraph.csv", csv => {
 		},
 	});
 });
-// 	for (let [area, data] of Object.entries(areas)) {
-// 		let formattedSlope = data.map((item) => {
-// 			let crimes = [];
-// 			for (let key in item) {
-// 				if (key !== "year")
-// 					crimes.push(item[key]);
-// 			}
-// 			return {
-// 				year: d3.timeParse("%Y")(item.year),
-// 				rate: sum(crimes),
-// 			}
-// 		});
 
-// 		new Slope(formattedSlope, {
-// 			container: document.body,
-// 			width: 960,
-// 			height: 500,
-// 			margin: {
-// 				top: 10,
-// 				right: 20,
-// 				bottom: 25,
-// 				left: 50,
-// 			},
-// 			axis: {
-// 				x: true,
-// 				y: true,
-// 			},
-// 			domain: {
-// 				y: [0, Math.max(...formattedSlope.map(item => item.rate))],
-// 			},
-// 			key: {
-// 				x: "year",
-// 				y: "rate",
-// 			},
-// 		});
+d3.csv("heatmap_2015.csv", csv => {
+	let formattedHeat = csv.map(item => {
+		return {
+			crime: CRIME[parseInt(item["Consolidated.Description"]) - 1],
+			latitude: parseFloat(item["Latitude"]),
+			longitude: parseFloat(item["Longitude"]),
+			hour: parseInt(item["Hour"]),
+			day: parseInt(item["Day"]),
+			month: parseInt(item["Mo"]),
+		};
+	});
+	console.log(formattedHeat);
+});
 
-// 		let formattedSimulate = data[data.length - 1];
-// 		delete formattedSimulate["year"];
-// 		new Simulate(formattedSimulate, {
-// 			size: 100,
-// 			population: POPULATION[area],
-// 		});
-// 	}
-// });
-
-// d3.csv("heatmap_2015.csv", csv => {
-// 	let formattedHeat = csv.map(item => {
-// 		return {
-// 			crime: CRIME[parseInt(item["Consolidated.Description"]) - 1],
-// 			latitude: parseFloat(item["Latitude"]),
-// 			longitude: parseFloat(item["Longitude"]),
-// 			hour: parseInt(item["Hour"]),
-// 			day: parseInt(item["Day"]),
-// 			month: parseInt(item["Mo"]),
-// 		};
-// 	});
-// 	console.log(formattedHeat);
-// });
-
-// d3.json("types.json", json => {
-// 	new Tree(json, {
-// 		container: document.body,
-// 		width: 1200,
-// 		height: 800,
-// 		margin: {
-// 			top: 15,
-// 			right: 90,
-// 			bottom: 15,
-// 			left: 135,
-// 		},
-// 	})
-// });
+d3.json("types.json", json => {
+	new Tree(json, {
+		container: document.body,
+		width: 1200,
+		height: 800,
+		margin: {
+			top: 15,
+			right: 90,
+			bottom: 15,
+			left: 135,
+		},
+	})
+});

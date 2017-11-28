@@ -28,10 +28,10 @@ export function diagonal(a, b) {
 export function SliceDistrict(data, district) {
 	let slice = data[district].slice()
 				.filter(dataRow => dataRow.year < 2016);
-	let districtData = {};
+	let districtData = [];
 	let keys = Object.keys(slice[0]);
 	for (let i in keys) {
-		districtData[keys[i]] = {
+		districtData[i] = {
 			key: keys[i],
 			data: slice.map(item => {
 				let row = {
