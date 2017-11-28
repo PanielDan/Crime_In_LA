@@ -61,6 +61,27 @@ d3.csv("data/slopegraph.csv", csv => {
 		return accumulator;
 	}, {});
 
+	let district = MultiSlope.SliceDistrict(areas, "Central");
+	new MultiSlope(district, {
+		container: document.body,
+		width: 960,
+		height: 500,
+		margin: {
+			top: 10,
+			right: 20,
+			bottom: 25,
+			left: 50,
+		},
+		axis: {
+			x: true,
+			y: true,
+		},
+		domain: {
+			y: MultiSlope.max(district),
+			z: CRIME
+		},
+	});
+
 	for (let [area, data] of Object.entries(areas)) {
 		let formattedSlope = data.map((item) => {
 			let crimes = [];
@@ -94,27 +115,6 @@ d3.csv("data/slopegraph.csv", csv => {
 			key: {
 				x: "year",
 				y: "rate",
-			},
-		});
-
-		let district = MultiSlope.slice(data);
-		new MultiSlope(district, {
-			container: document.body,
-			width: 960,
-			height: 500,
-			margin: {
-				top: 10,
-				right: 20,
-				bottom: 25,
-				left: 50,
-			},
-			axis: {
-				x: true,
-				y: true,
-			},
-			domain: {
-				y: MultiSlope.max(district),
-				z: CRIME
 			},
 		});
 

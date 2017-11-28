@@ -62,4 +62,24 @@ export default class MultiSlope {
 	static max(slice) {
 		return Math.max(...Object.values(slice).map(item => Math.max(...item.data.map(subitem => subitem.value))));
 	}
+
+	// Slices area data variable to only return the specified district w/ years [2010,2015]
+	static SliceDistrict(data, district) {
+		let slice = data[district].slice().filter(dataRow => dataRow.year < 2016);
+		let districtData = [];
+		let keys = Object.keys(slice[0]);
+		for (let i in keys) {
+			districtData[i] = {
+				key: keys[i],
+				data: slice.map(item => {
+					let row = {
+  						year: item.year,
+						value: item[keys[i]]
+					}
+ 					return row;
+				})
+			};
+		}
+	return districtData;
+	}
 }
