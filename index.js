@@ -1,7 +1,8 @@
-import {sum} from "./Utilities.js";
+import {sum, SliceDistrict, MaxOfSliceDistrict} from "./Utilities.js";
 import Slope from "./Slope.js";
 import Simulate from "./Simulate.js";
 import Tree from "./Tree.js";
+import MultiSlope from "./MultiSlope/MultiSlope.js"
 
 const CRIME = [
 	"Assault and Battery",
@@ -54,7 +55,7 @@ d3.csv("slopegraph.csv", csv => {
 		if (!(area in accumulator))
 			accumulator[area] = [];
 
-		crimes.year = year;
+		crimes.year = parseInt(year);
 		accumulator[area].push(crimes);
 		return accumulator;
 	}, {});
@@ -102,6 +103,27 @@ d3.csv("slopegraph.csv", csv => {
 			population: POPULATION[area],
 		});
 	}
+
+	let district = SliceDistrict(areas, "Central");
+	new MultiSlope(district, {
+		container: document.body,
+		width: 960,
+		height: 500,
+		margin: {
+			top: 10,
+			right: 20,
+			bottom: 25,
+			left: 50,
+		},
+		axis: {
+			x: true,
+			y: true,
+		},
+		domain: {
+			y: MaxOfSliceDistrict(district),
+			z: CRIME
+		},
+	});
 });
 
 d3.csv("heatmap_2015.csv", csv => {
