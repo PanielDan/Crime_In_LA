@@ -1,4 +1,5 @@
 import {sum, SliceDistrict, MaxOfSliceDistrict} from "./Utilities.js";
+import Heat from "./Heat.js";
 import Slope from "./Slope.js";
 import Simulate from "./Simulate.js";
 import Tree from "./Tree.js";
@@ -127,17 +128,34 @@ d3.csv("slopegraph.csv", csv => {
 });
 
 d3.csv("heatmap_2015.csv", csv => {
-	let formattedHeat = csv.map(item => {
-		return {
-			crime: CRIME[parseInt(item["Consolidated.Description"]) - 1],
-			latitude: parseFloat(item["Latitude"]),
-			longitude: parseFloat(item["Longitude"]),
-			hour: parseInt(item["Hour"]),
-			day: parseInt(item["Day"]),
-			month: parseInt(item["Mo"]),
-		};
+	let formattedHeat = Object.values(csv.reduce((accumulator, item) => {
+		let key = item["Latitude"] + item["Longitude"];
+		if (!(key in accumulator)) {
+			accumulator[key] = {
+				lat: parseFloat(item["Latitude"]),
+				lng: parseFloat(item["Longitude"]),
+				value: 0,
+			};
+		}
+		++accumulator[key].value;
+		return accumulator;
+	}, {}));
+
+	let heatData = {
+		max: sum(formattedHeat.map(item => item.value)) / formattedHeat.length,
+		data: formattedHeat,
+	};
+
+	new Heat(heatData, {
+		container: document.body,
+		width: 1200,
+		height: 800,
+		zoom: 11,
+		center: {
+			lat: sum(formattedHeat.map(item => item.lat)) / formattedHeat.length,
+			lng: sum(formattedHeat.map(item => item.lng)) / formattedHeat.length,
+		},
 	});
-	console.log(formattedHeat);
 });
 
 d3.json("types.json", json => {
