@@ -1,9 +1,9 @@
-import {sum, SliceDistrict, MaxOfSliceDistrict} from "./Utilities.js";
-import Heat from "./Heat.js";
-import Slope from "./Slope.js";
-import Simulate from "./Simulate.js";
-import Tree from "./Tree.js";
-import MultiSlope from "./MultiSlope/MultiSlope.js"
+import Heat from "./ui/Heat.js";
+import MultiSlope from "./ui/MultiSlope.js"
+import Simulate from "./ui/Simulate.js";
+import Slope from "./ui/Slope.js";
+import Tree from "./ui/Tree.js";
+import {sum} from "./ui/Utilities.js";
 
 const CRIME = [
 	"Assault and Battery",
@@ -43,7 +43,7 @@ const POPULATION = {
 	"Wilshire":    251000,
 };
 
-d3.csv("slopegraph.csv", csv => {
+d3.csv("data/slopegraph.csv", csv => {
 	let areas = csv.reduce((accumulator, row) => {
 		let area = row["Area.Name"];
 		let year = row["Year"];
@@ -97,6 +97,27 @@ d3.csv("slopegraph.csv", csv => {
 			},
 		});
 
+		let district = MultiSlope.slice(data);
+		new MultiSlope(district, {
+			container: document.body,
+			width: 960,
+			height: 500,
+			margin: {
+				top: 10,
+				right: 20,
+				bottom: 25,
+				left: 50,
+			},
+			axis: {
+				x: true,
+				y: true,
+			},
+			domain: {
+				y: MultiSlope.max(district),
+				z: CRIME
+			},
+		});
+
 		let formattedSimulate = data[data.length - 1];
 		delete formattedSimulate["year"];
 		new Simulate(formattedSimulate, {
@@ -104,30 +125,9 @@ d3.csv("slopegraph.csv", csv => {
 			population: POPULATION[area],
 		});
 	}
-
-	let district = SliceDistrict(areas, "Central");
-	new MultiSlope(district, {
-		container: document.body,
-		width: 960,
-		height: 500,
-		margin: {
-			top: 10,
-			right: 20,
-			bottom: 25,
-			left: 50,
-		},
-		axis: {
-			x: true,
-			y: true,
-		},
-		domain: {
-			y: MaxOfSliceDistrict(district),
-			z: CRIME
-		},
-	});
 });
 
-d3.csv("heatmap_2015.csv", csv => {
+d3.csv("data/heatmap_2015.csv", csv => {
 	let formattedHeat = Object.values(csv.reduce((accumulator, item) => {
 		let key = item["Latitude"] + item["Longitude"];
 		if (!(key in accumulator)) {
@@ -158,7 +158,7 @@ d3.csv("heatmap_2015.csv", csv => {
 	});
 });
 
-d3.json("types.json", json => {
+d3.json("data/types.json", json => {
 	new Tree(json, {
 		container: document.body,
 		width: 1200,
