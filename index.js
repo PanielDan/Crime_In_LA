@@ -44,7 +44,7 @@ export const AREA = [
 ];
 
 // http://www.lapdonline.org/
-const POPULATION = {
+export const POPULATION = {
 	"77th Street": 175000,
 	"Central":      40000,
 	"Devonshire":  219136,

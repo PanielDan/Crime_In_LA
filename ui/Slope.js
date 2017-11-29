@@ -16,8 +16,8 @@ export default class Slope {
 
 		let svg = container.append("svg")
 			.attr("viewBox", `0 0 ${options.width}, ${options.height}`)
-			.attr("height", options.height)
-			.attr("width", options.width)
+			.attr("height", options.height + 'px')
+			.attr("width", options.width + 'px')
 			.attr("class", "line");
 
 		if (options.notext) {

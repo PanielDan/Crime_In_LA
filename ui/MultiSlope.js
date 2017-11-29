@@ -19,9 +19,9 @@ export default class MultiSlope {
 		let container = d3.select(options.container || "body");
 
 		let svg = container.append("svg")
-            // .attr("viewBox", `0 0 ${options.width}, ${options.height}`)
-			.attr("height", options.height)
-			.attr("width", options.width)
+            .attr("viewBox", `0 0 ${options.width}, ${options.height}`)
+			.style("height", options.height + 'px')
+			.style("width", options.width + 'px')
 			.attr("class", "line multi");
 
 		if (options.axis.x) {
@@ -38,7 +38,6 @@ export default class MultiSlope {
 				.call(d3.axisLeft(scale.y));
 		}
 
-		console.log(data);
 		svg.append("g")
 			.attr("class", "chart")
 			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)

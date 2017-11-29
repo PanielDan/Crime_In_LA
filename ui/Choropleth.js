@@ -12,7 +12,7 @@ export default class Choropleth {
         let container = d3.select(options.container || "body");
 
         let svg = container.append("svg")
-            // .attr("viewBox", `0 0 ${options.width}, ${options.height}`)
+            .attr("viewBox", `0 0 ${options.width}, ${options.height}`)
             .attr("height", options.height)
             .attr("width", options.width)
             .attr("class", "chloropleth");
@@ -56,7 +56,7 @@ export default class Choropleth {
                     .attr('d', path)
                     .attr('id', d => kebabCase(AREA[d.properties.external_id]))
                     .attr('fill', d => color(data[d.properties.external_id-1]))
-                    .attr('stroke', 'black');
+                    .attr('stroke', 'grey');
         }
     }
 }
