@@ -1,3 +1,5 @@
+import { kebabCase } from "./Utilities.js";
+
 export default class MultiSlope {
 	constructor(data, options = {}) {
 		let scale = {
@@ -17,7 +19,9 @@ export default class MultiSlope {
 		let container = d3.select(options.container || "body");
 
 		let svg = container.append("svg")
-			.attr("viewBox", `0 0 ${options.width}, ${options.height}`)
+            // .attr("viewBox", `0 0 ${options.width}, ${options.height}`)
+			.attr("height", options.height)
+			.attr("width", options.width)
 			.attr("class", "line multi");
 
 		if (options.axis.x) {
@@ -34,6 +38,7 @@ export default class MultiSlope {
 				.call(d3.axisLeft(scale.y));
 		}
 
+		console.log(data);
 		svg.append("g")
 			.attr("class", "chart")
 			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
@@ -41,25 +46,27 @@ export default class MultiSlope {
 				.data(data)
 				.enter()
 				.append("path")
+					.attr("id", d => kebabCase(d.key))
 					.attr("d",  d => line(d.data))
 					.style("stroke", d => scale.z(d.key))
 					.style("stroke-width", 3);
 	}
 
 	static slice(data) {
-		return Object.keys(data[0]).map(key => {
+		let slice = Object.keys(data[0])
+		slice.splice(10,2);
+		return slice.map(key => {
 			return {
 				key,
 				data: data.map(item => {
 					return {
-						year: item.year,
+						year: d3.timeParse("%Y")(item.year),
 						value: item[key],
 					};
-				}),
-			}
+				}).filter(item => item.year < d3.timeParse("%Y")(2016))
+			};
 		});
 	}
-
 	static max(slice) {
 		return Math.max(...Object.values(slice).map(item => Math.max(...item.data.map(subitem => subitem.value))));
 	}

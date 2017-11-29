@@ -33,3 +33,8 @@ svg.tree > .chart .link {
 	stroke: lightgrey;
 	stroke-width: 2px;
 }
+
+/* .line .axis text 
+{ 
+	display: none;
+} */

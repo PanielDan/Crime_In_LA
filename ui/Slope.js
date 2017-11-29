@@ -16,20 +16,26 @@ export default class Slope {
 
 		let svg = container.append("svg")
 			.attr("viewBox", `0 0 ${options.width}, ${options.height}`)
+			.attr("height", options.height)
+			.attr("width", options.width)
 			.attr("class", "line");
+
+		if (options.notext) {
+			d3.svg.axis().tickSize(0);
+		}
 
 		if (options.axis.x) {
 			svg.append("g")
 				.attr("class", "axis x")
 				.attr("transform", `translate(${options.margin.left}, ${options.height - options.margin.bottom})`)
-				.call(d3.axisBottom(scale.x));
+				.call(d3.axisBottom(scale.x).tickValues([]));
 		}
 
 		if (options.axis.y) {
 			svg.append("g")
 				.attr("class", "axis y")
 				.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
-				.call(d3.axisLeft(scale.y));
+				.call(d3.axisLeft(scale.y).tickValues([]));
 		}
 
 		svg.append("g")
@@ -37,6 +43,7 @@ export default class Slope {
 			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
 			.append("path")
 				.datum(data)
-				.attr("d", line);
+				.attr("d", line)
+				.style("stroke-width", 2);
 	}
 }

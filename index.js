@@ -89,7 +89,7 @@ d3.csv("data/slopegraph.csv", csv => {
 	new SlopeGraphsViz(areas, {
 		container: document.body,
 		width: 1366,
-		height: 768,
+		// height: 768,
 		margin: {
 			top: 10,
 			right: 20,
@@ -109,28 +109,6 @@ d3.csv("data/slopegraph.csv", csv => {
 				year: d3.timeParse("%Y")(item.year),
 				rate: sum(crimes),
 			}
-		});
-		new Slope(formattedSlope, {
-			container: document.body,
-			width: 960,
-			height: 500,
-			margin: {
-				top: 10,
-				right: 20,
-				bottom: 25,
-				left: 50,
-			},
-			axis: {
-				x: true,
-				y: true,
-			},
-			domain: {
-				y: [0, Math.max(...formattedSlope.map(item => item.rate))],
-			},
-			key: {
-				x: "year",
-				y: "rate",
-			},
 		});
 
 		// let formattedSimulate = data[data.length - 1];

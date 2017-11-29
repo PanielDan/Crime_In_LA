@@ -7,14 +7,14 @@ export default class Choropleth {
         let max = Math.max(...data);
         let color = d3.scaleLinear()
             .domain([min,0, max])
-            // .range(d3.schemeRdYlGn[10]);
             .range(['green','white','red']);
-        console.log(color(data[5]));
 
         let container = d3.select(options.container || "body");
 
         let svg = container.append("svg")
-            .attr("viewBox", `0 0 ${options.width}, ${options.height}`)
+            // .attr("viewBox", `0 0 ${options.width}, ${options.height}`)
+            .attr("height", options.height)
+            .attr("width", options.width)
             .attr("class", "chloropleth");
 
         d3.queue()
@@ -36,7 +36,7 @@ export default class Choropleth {
             // Compute the bounds of a feature of interest, 
             // then derive scale & translate.
             const laBounds = path.bounds(map);
-            const laScale = 0.95 / Math.max(
+            const laScale = 0.90 / Math.max(
                 (laBounds[1][0] - laBounds[0][0]) / options.width,
                 (laBounds[1][1] - laBounds[0][1]) / options.height
             );
@@ -49,7 +49,6 @@ export default class Choropleth {
             laProjection.scale(laScale)
                 .translate(laTranslate);
 
-            console.log(data);
             svg.selectAll('.chloropleth')
                 .data(map.features)
                 .enter()
