@@ -19,6 +19,31 @@ const CRIME = [
 	"Other",
 ];
 
+const AREA = [
+	undefined, // IDs start at 1
+	"Central",
+	"Rampart",
+	"Southwest",
+	"Hollenbeck",
+	"Harbor",
+	"Hollywood",
+	"Wilshire",
+	"West LA",
+	"Van Nuys",
+	"West Valley",
+	"Northeast",
+	"77th Street",
+	"Newton",
+	"Pacific",
+	"N Hollywood",
+	"Foothill",
+	"Devonshire",
+	"Southeast",
+	"Mission",
+	"Olympic",
+	"Topanga",
+];
+
 // http://www.lapdonline.org/
 const POPULATION = {
 	"77th Street": 175000,
@@ -166,29 +191,26 @@ d3.csv("data/heatmap_2015.csv", csv => {
 	let formattedHeat = Object.values(csv.reduce((accumulator, item) => {
 		let key = item["Latitude"] + item["Longitude"];
 		if (!(key in accumulator)) {
+			let x = parseFloat(item["Latitude"]);
+			let y = parseFloat(item["Longitude"]);
 			accumulator[key] = {
-				lat: parseFloat(item["Latitude"]),
-				lng: parseFloat(item["Longitude"]),
-				value: 0,
+				x,
+				y,
+				data: new Heat.Point(x, y, AREA[item["Area.ID"]]),
 			};
 		}
-		++accumulator[key].value;
+		accumulator[key].data.add(CRIME[item["Consolidated.Description"]]);
 		return accumulator;
 	}, {}));
 
-	let heatData = {
-		max: sum(formattedHeat.map(item => item.value)) / formattedHeat.length,
-		data: formattedHeat,
-	};
-
-	new Heat(heatData, {
+	new Heat(formattedHeat, {
 		container: document.body,
 		width: 1200,
 		height: 800,
 		zoom: 11,
 		center: {
-			lat: sum(formattedHeat.map(item => item.lat)) / formattedHeat.length,
-			lng: sum(formattedHeat.map(item => item.lng)) / formattedHeat.length,
+			lat: sum(formattedHeat.map(item => item.x)) / formattedHeat.length,
+			lng: sum(formattedHeat.map(item => item.y)) / formattedHeat.length,
 		},
 	});
 });
