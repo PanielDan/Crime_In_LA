@@ -32,7 +32,6 @@ export default class DistrictDetailsPanel
         </div>
         `;
 
-
         d3.select('#slope-viz-details')
             .select('.crime')
                 .selectAll('p')

@@ -36,7 +36,7 @@ export default class SlopeGraphsViz {
             maxSum = Math.max(maxSum ,Math.max(...formattedSlope.map(item => item.rate)));
             districtCrimeSums.push((formattedSlope[5].rate - formattedSlope[0].rate) / formattedSlope[0].rate);
         }
-
+        
         let detailsPanel = new DistrictDetailsPanel(formattedSlopes[0], {
             container: '#slope-graph-viz',
             width: 500,

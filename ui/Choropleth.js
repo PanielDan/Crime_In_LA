@@ -7,7 +7,7 @@ export default class Choropleth {
         let max = Math.max(...data);
         let color = d3.scaleLinear()
             .domain([min,0, max])
-            .range(['green','white','red']);
+            .range(['green','white','blue']);
 
         let container = d3.select(options.container || "body");
 
