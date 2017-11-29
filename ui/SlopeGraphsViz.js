@@ -18,7 +18,6 @@ export default class SlopeGraphsViz {
         let formattedSlopes = [];
         let maxSum = 0;
         for (let [area, data] of Object.entries(slopeData)) {
-            console.log(area);
             let formattedSlope = data.map((item) => {
                 let crimes = [];
                 for (let key in item) {
@@ -26,8 +25,9 @@ export default class SlopeGraphsViz {
                         crimes.push(item[key]);
                 }
                 return {
+                    area: area,
                     year: d3.timeParse("%Y")(item.year),
-                    rate: sum(crimes),
+                    rate: sum(crimes)
                 }
             });
             formattedSlope = formattedSlope.filter(item => item.year < d3.timeParse("%Y")(2016));
@@ -42,7 +42,7 @@ export default class SlopeGraphsViz {
             .style('height', '350px')
             .style('padding', '10px');
 
-        let Choropleth = Choropleth(districtCrimeSums, {
+        let choropleth = new Choropleth(districtCrimeSums, {
             container: '#slope-graph-viz',
             width: 500,
             height: 350,
@@ -55,7 +55,7 @@ export default class SlopeGraphsViz {
         });
 
         let district = MultiSlope.slice(slopeData[1]);
-        let multiSlope = MultiSlope(district, {
+        let multiSlope = new MultiSlope(district, {
             container: '#slope-graph-viz',
             width: 500,
             height: 250,
