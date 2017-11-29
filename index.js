@@ -19,7 +19,7 @@ const CRIME = [
 	"Other",
 ];
 
-const AREA = [
+export const AREA = [
 	undefined, // IDs start at 1
 	"Central",
 	"Rampart",
@@ -68,30 +68,6 @@ const POPULATION = {
 	"West Valley": 196840,
 	"Wilshire":    251000
 };
-
-export const AREAS = [
-	"Central",
-	"Rampart",
-	"Southwest",
-	"Hollenbeck",
-	"Harbor",
-	"Hollywood",
-	"Wilshire",
-	"West LA",
-	"Van Nuys",
-	"West Valley",
-	"Northeast",
-	"77th Street",
-	"Newton",
-	"Pacific",
-	"N Hollywood",
-	"Foothill",
-	"Devonshire",
-	"Southeast",
-	"Mission",
-	"Olympic",
-	"Topanga",
-];
 
 d3.csv("data/slopegraph.csv", csv => {
 	let areas = csv.reduce((accumulator, row) => {

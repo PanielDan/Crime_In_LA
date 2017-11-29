@@ -55,7 +55,7 @@ export default class Choropleth {
                 .enter()
                 .append('path')
                     .attr('d', path)
-                    .attr('id', d => kebabCase(AREAS[d.properties.external_id - 1]))
+                    .attr('id', d => kebabCase(AREAS[d.properties.external_id]))
                     .attr('fill', d => color(data[d.properties.external_id-1]))
                     .attr('stroke', 'black');
         }
