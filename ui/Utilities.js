@@ -1,3 +1,7 @@
+export function diagonal(a, b) {
+	return `M ${a.y} ${a.x} C ${(a.y + b.y) / 2} ${a.x}, ${(a.y + b.y) / 2} ${b.x}, ${b.y} ${b.x}`;
+}
+
 export function getCSSValue(element, property) {
 	let value = window.getComputedStyle(element).getPropertyCSSValue(property)[0];
 	if (value instanceof CSSValueList)
@@ -5,8 +9,8 @@ export function getCSSValue(element, property) {
 	return value.getFloatValue(CSSPrimitiveValue.CSS_PX);
 }
 
-export function sum(object, initialValue = 0) {
-	return Object.values(object).reduce((accumulator, item) => accumulator + item, initialValue);
+export function kebabCase(string) {
+	return string.replace(/\s+/g, "-").toLowerCase();
 }
 
 export function normalize(object, sigma) {
@@ -14,6 +18,10 @@ export function normalize(object, sigma) {
 		accumulator[key] = value / sigma;
 		return accumulator;
 	}, Array.isArray(object) ? [] : {});
+}
+
+export function sum(object, initialValue = 0) {
+	return Object.values(object).reduce((accumulator, item) => accumulator + item, initialValue);
 }
 
 export function weightedRandom(weights) {
@@ -24,12 +32,4 @@ export function weightedRandom(weights) {
 		if (random <= 0)
 			return Array.isArray(weights) ? parseInt(key) : key;
 	}
-}
-
-export function diagonal(a, b) {
-	return `M ${a.y} ${a.x} C ${(a.y + b.y) / 2} ${a.x}, ${(a.y + b.y) / 2} ${b.x}, ${b.y} ${b.x}`;
-}
-
-export function kebabCase(string) {
-	return string.replace(/\s+/g, '-').toLowerCase()
 }
