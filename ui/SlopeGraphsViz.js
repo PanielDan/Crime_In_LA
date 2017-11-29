@@ -1,8 +1,8 @@
 import Choropleth from "./Choropleth.js";
 import MultiSlope from "./MultiSlope.js";
 import Slope from './Slope.js';
-import {sum} from "./Utilities.js";
-import {CRIME} from '../Constants.js';
+import { createSVG, sum } from "./Utilities.js";
+import { AREA, CRIME } from '../Constants.js';
 import DistrictDetailsPanel from './DistrictDetailsPanel.js'
 
 export default class SlopeGraphsViz {
@@ -83,11 +83,9 @@ export default class SlopeGraphsViz {
 
         container.append('div')
                 .attr('id', 'small-multiples')
-                .style('width', '500px')
-                .style('height', '250px')
-                .style('padding', '10px');
+                .style('width', '500px');
         for ( let dataSet of formattedSlopes ) {
-            new Slope(dataSet, {
+            let slope = new Slope(dataSet, {
                 container: '#small-multiples',
                 width: 150,
                 height: 30,
@@ -109,6 +107,13 @@ export default class SlopeGraphsViz {
                     x: "year",
                     y: "rate",
                 },
+            });
+            slope.element.appendChild(createSVG("title")).textContent = AREA[dataSet[0].area];
+            slope.element.addEventListener("mouseover", (event) => {
+                choropleth.highlight(dataSet[0].area);
+            });
+            slope.element.addEventListener("mouseleave", (event) => {
+                choropleth.highlight();
             });
         }
     }

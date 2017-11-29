@@ -91,3 +91,14 @@ svg.tree > .chart .link {
 	justify-content: space-between;
 	margin: 5px 0px 5px 0px
 }
+
+#slope-graph-viz #small-multiples {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	justify-content: center;
+}
+
+#slope-graph-viz #small-multiples > .line {
+	padding: 2px 4px;
+}
