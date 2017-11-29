@@ -95,7 +95,7 @@ export const AREAS = [
 
 d3.csv("data/slopegraph.csv", csv => {
 	let areas = csv.reduce((accumulator, row) => {
-		let area = row["Area.Name"];
+		let area = row["Area.ID"];
 		let year = row["Year"];
 		let crimes = {};
 		for (let crime in row) {
@@ -107,11 +107,11 @@ d3.csv("data/slopegraph.csv", csv => {
 			accumulator[area] = [];
 
 		crimes.year = parseInt(year);
-		accumulator[area].push(crimes);
+		accumulator[+area].push(crimes);
 		return accumulator;
 	}, {});
 
-	let district = MultiSlope.slice(areas["Central"]);
+	let district = MultiSlope.slice(areas[1]);
 	new MultiSlope(district, {
 		container: document.body,
 		width: 960,
