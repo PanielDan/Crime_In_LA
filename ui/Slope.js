@@ -14,10 +14,10 @@ export default class Slope {
 
 		let container = d3.select(options.container || "body");
 
-		let svg = container.append("svg")
+		this._svg = container.append("svg")
 			.attr("viewBox", `0 0 ${options.width}, ${options.height}`)
-			.attr("height", options.height)
-			.attr("width", options.width)
+			.attr("height", options.height + 'px')
+			.attr("width", options.width + 'px')
 			.attr("class", "line");
 
 		if (options.notext) {
@@ -25,20 +25,20 @@ export default class Slope {
 		}
 
 		if (options.axis.x) {
-			svg.append("g")
+			this._svg.append("g")
 				.attr("class", "axis x")
 				.attr("transform", `translate(${options.margin.left}, ${options.height - options.margin.bottom})`)
 				.call(d3.axisBottom(scale.x).tickValues([]));
 		}
 
 		if (options.axis.y) {
-			svg.append("g")
+			this._svg.append("g")
 				.attr("class", "axis y")
 				.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
 				.call(d3.axisLeft(scale.y).tickValues([]));
 		}
 
-		svg.append("g")
+		this._svg.append("g")
 			.attr("class", "chart")
 			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
 			.append("path")
@@ -46,4 +46,6 @@ export default class Slope {
 				.attr("d", line)
 				.style("stroke-width", 2);
 	}
+
+	get element() { return this._svg.node(); }
 }

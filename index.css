@@ -6,6 +6,10 @@ body {
 	  -o-tab-size: 2;
 	     tab-size: 2;
 }
+h3 {
+	font-size: 16px;
+	margin: 3px;
+}
 
 input[type="number"] {
 	max-width: 3.5em;
@@ -67,8 +71,34 @@ svg.tree > .chart .link {
 	stroke: lightgrey;
 	stroke-width: 2px;
 }
+#slope-graph-viz p {
+	font-size: 14px;
+	margin: 5px;
+	font-weight: 500;
+}
 
-/* .line .axis text 
-{ 
-	display: none;
-} */
+.district.details h1 {
+	font-size: 30px;
+}
+
+#slope-graph-viz {
+	background-color: 'grey';
+}
+
+#slope-graph-viz .displayframe {
+	display: flex;
+	align-items: space-between;
+	justify-content: space-between;
+	margin: 5px 0px 5px 0px
+}
+
+#slope-graph-viz #small-multiples {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	justify-content: center;
+}
+
+#slope-graph-viz #small-multiples > .line {
+	padding: 2px 4px;
+}

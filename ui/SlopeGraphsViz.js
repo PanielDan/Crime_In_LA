@@ -1,16 +1,17 @@
 import Choropleth from "./Choropleth.js";
 import MultiSlope from "./MultiSlope.js";
 import Slope from './Slope.js';
-import { sum } from "./Utilities.js";
-import { CRIME } from '../Constants.js';
+import { createSVG, sum } from "./Utilities.js";
+import { AREA, CRIME } from '../Constants.js';
+import DistrictDetailsPanel from './DistrictDetailsPanel.js'
 
 export default class SlopeGraphsViz {
     constructor (slopeData, options = {}) {
         let container = d3.select(options.container || "body")
                            .append('div')
                                 .attr('id', 'slope-graph-viz')
-                                .style('width', options.width)
-                                //.style('height', options.height)
+                                .style('width', options.width + 'px')
+                                .style('height', options.height + 'px')
                                 .style('display', 'flex')
                                 .style('flex-wrap', 'wrap');
                 
@@ -33,21 +34,26 @@ export default class SlopeGraphsViz {
             formattedSlope = formattedSlope.filter(item => item.year < d3.timeParse("%Y")(2016));
             formattedSlopes.push(formattedSlope);
             maxSum = Math.max(maxSum ,Math.max(...formattedSlope.map(item => item.rate)));
-            districtCrimeSums.push((formattedSlope[0].rate - formattedSlope[5].rate) / formattedSlope[5].rate);
+            districtCrimeSums.push((formattedSlope[5].rate - formattedSlope[0].rate) / formattedSlope[0].rate);
         }
-
-        container.append('div')
-            .attr('id', 'slope-viz-details')
-            .style('width', '500px')
-            .style('height', '350px')
-            .style('padding', '10px');
-
-        let choropleth = new Choropleth(districtCrimeSums, {
+        
+        let detailsPanel = new DistrictDetailsPanel(formattedSlopes[0], {
             container: '#slope-graph-viz',
             width: 500,
             height: 350,
             margin: {
                 top: 10,
+                right: 10,
+                bottom: 10,
+                left: 10,
+            }
+        });
+        let choropleth = new Choropleth(districtCrimeSums, {
+            container: '#slope-graph-viz',
+            width: 500,
+            height: 350,
+            margin: {
+                top: 20,
                 right: 10,
                 bottom: 10,
                 left: 10,
@@ -77,11 +83,9 @@ export default class SlopeGraphsViz {
 
         container.append('div')
                 .attr('id', 'small-multiples')
-                .style('width', '500px')
-                .style('height', '250px')
-                .style('padding', '10px');
+                .style('width', '500px');
         for ( let dataSet of formattedSlopes ) {
-            new Slope(dataSet, {
+            let slope = new Slope(dataSet, {
                 container: '#small-multiples',
                 width: 150,
                 height: 30,
@@ -98,12 +102,18 @@ export default class SlopeGraphsViz {
                 },
                 domain: {
                     y: [0, maxSum],
-                    // y: [0,MultiSlope.max(district)]
                 },
                 key: {
                     x: "year",
                     y: "rate",
                 },
+            });
+            slope.element.appendChild(createSVG("title")).textContent = AREA[dataSet[0].area];
+            slope.element.addEventListener("mouseover", (event) => {
+                choropleth.highlight(dataSet[0].area);
+            });
+            slope.element.addEventListener("mouseleave", (event) => {
+                choropleth.highlight();
             });
         }
     }
