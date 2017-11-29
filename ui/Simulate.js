@@ -1,5 +1,5 @@
 import { AREA, POPULATION } from "../Constants.js";
-import { sum, weightedRandom } from "./Utilities.js";
+import { getCSSValue, sum, weightedRandom } from "./Utilities.js";
 
 export default class Simulate {
 	constructor(data, options = {}) {
@@ -51,6 +51,8 @@ export default class Simulate {
 	}
 
 	_redraw() {
+		this._chart.style.setProperty("height", (this._chart.offsetHeight - (2 * getCSSValue(this._chart, "padding"))) + "px");
+
 		while (this._chart.firstChild)
 			this._chart.firstChild.remove();
 
@@ -69,6 +71,10 @@ export default class Simulate {
 			image.src = `images/${item}.svg`;
 			image.title = item || "No Crime";
 		}
+
+		window.requestAnimationFrame(() => {
+			this._chart.style.removeProperty("height");
+		});
 	}
 
 	_handleOptionsSubmit(event) {

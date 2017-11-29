@@ -1,3 +1,10 @@
+export function getCSSValue(element, property) {
+	let value = window.getComputedStyle(element).getPropertyCSSValue(property)[0];
+	if (value instanceof CSSValueList)
+		value = value[0];
+	return value.getFloatValue(CSSPrimitiveValue.CSS_PX);
+}
+
 export function sum(object, initialValue = 0) {
 	return Object.values(object).reduce((accumulator, item) => accumulator + item, initialValue);
 }
