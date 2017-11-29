@@ -1,7 +1,9 @@
-import {sum} from "./Utilities.js";
-import Slope from "./Slope.js";
-import Simulate from "./Simulate.js";
-import Tree from "./Tree.js";
+import Heat from "./ui/Heat.js";
+import MultiSlope from "./ui/MultiSlope.js"
+import Simulate from "./ui/Simulate.js";
+import Slope from "./ui/Slope.js";
+import Tree from "./ui/Tree.js";
+import {sum} from "./ui/Utilities.js";
 
 const CRIME = [
 	"Assault and Battery",
@@ -41,7 +43,7 @@ const POPULATION = {
 	"Wilshire":    251000,
 };
 
-d3.csv("slopegraph.csv", csv => {
+d3.csv("data/slopegraph.csv", csv => {
 	let areas = csv.reduce((accumulator, row) => {
 		let area = row["Area.Name"];
 		let year = row["Year"];
@@ -54,7 +56,7 @@ d3.csv("slopegraph.csv", csv => {
 		if (!(area in accumulator))
 			accumulator[area] = [];
 
-		crimes.year = year;
+		crimes.year = parseInt(year);
 		accumulator[area].push(crimes);
 		return accumulator;
 	}, {});
@@ -95,6 +97,27 @@ d3.csv("slopegraph.csv", csv => {
 			},
 		});
 
+		let district = MultiSlope.slice(data);
+		new MultiSlope(district, {
+			container: document.body,
+			width: 960,
+			height: 500,
+			margin: {
+				top: 10,
+				right: 20,
+				bottom: 25,
+				left: 50,
+			},
+			axis: {
+				x: true,
+				y: true,
+			},
+			domain: {
+				y: MultiSlope.max(district),
+				z: CRIME
+			},
+		});
+
 		let formattedSimulate = data[data.length - 1];
 		delete formattedSimulate["year"];
 		new Simulate(formattedSimulate, {
@@ -104,21 +127,38 @@ d3.csv("slopegraph.csv", csv => {
 	}
 });
 
-d3.csv("heatmap_2015.csv", csv => {
-	let formattedHeat = csv.map(item => {
-		return {
-			crime: CRIME[parseInt(item["Consolidated.Description"]) - 1],
-			latitude: parseFloat(item["Latitude"]),
-			longitude: parseFloat(item["Longitude"]),
-			hour: parseInt(item["Hour"]),
-			day: parseInt(item["Day"]),
-			month: parseInt(item["Mo"]),
-		};
+d3.csv("data/heatmap_2015.csv", csv => {
+	let formattedHeat = Object.values(csv.reduce((accumulator, item) => {
+		let key = item["Latitude"] + item["Longitude"];
+		if (!(key in accumulator)) {
+			accumulator[key] = {
+				lat: parseFloat(item["Latitude"]),
+				lng: parseFloat(item["Longitude"]),
+				value: 0,
+			};
+		}
+		++accumulator[key].value;
+		return accumulator;
+	}, {}));
+
+	let heatData = {
+		max: sum(formattedHeat.map(item => item.value)) / formattedHeat.length,
+		data: formattedHeat,
+	};
+
+	new Heat(heatData, {
+		container: document.body,
+		width: 1200,
+		height: 800,
+		zoom: 11,
+		center: {
+			lat: sum(formattedHeat.map(item => item.lat)) / formattedHeat.length,
+			lng: sum(formattedHeat.map(item => item.lng)) / formattedHeat.length,
+		},
 	});
-	console.log(formattedHeat);
 });
 
-d3.json("types.json", json => {
+d3.json("data/types.json", json => {
 	new Tree(json, {
 		container: document.body,
 		width: 1200,
