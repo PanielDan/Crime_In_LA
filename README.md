@@ -5,6 +5,6 @@ This project was completed as a final project for the Information Visualization 
 
 ### [Demo] 
 
-### [Paper](https://www.overleaf.com/10958890qjczkkmfskpn#/41248927/) 
+### [Paper](https://www.overleaf.com/read/hdggwspywstv) 
 
 ### [Video]
