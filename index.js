@@ -1,72 +1,10 @@
+import { AREA, CRIME, POPULATION } from "./Constants.js";
 import Heat from "./ui/Heat.js";
 import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
-import {sum} from "./ui/Utilities.js";
+import { sum } from "./ui/Utilities.js";
 import SlopeGraphsViz from './ui/SlopeGraphsViz.js';
-
-export const CRIME = [
-	"Assault and Battery",
-	"Destruction of Property",
-	"Domestic Disturbance",
-	"Fraud",
-	"Homicide",
-	"Human Trafficking",
-	"Kidnapping",
-	"Resisting Arrest",
-	"Theft",
-	"Other",
-];
-
-export const AREA = [
-	undefined, // IDs start at 1
-	"Central",
-	"Rampart",
-	"Southwest",
-	"Hollenbeck",
-	"Harbor",
-	"Hollywood",
-	"Wilshire",
-	"West LA",
-	"Van Nuys",
-	"West Valley",
-	"Northeast",
-	"77th Street",
-	"Newton",
-	"Pacific",
-	"N Hollywood",
-	"Foothill",
-	"Devonshire",
-	"Southeast",
-	"Mission",
-	"Olympic",
-	"Topanga",
-];
-
-// http://www.lapdonline.org/
-export const POPULATION = {
-	"77th Street": 175000,
-	"Central":      40000,
-	"Devonshire":  219136,
-	"Foothill":    182214,
-	"Harbor":      171000,
-	"Hollenbeck":  200000,
-	"Hollywood":   300000,
-	"Mission":     225849,
-	"N Hollywood": 220000,
-	"Newton":      150000,
-	"Northeast":   250000,
-	"Olympic":     200000,
-	"Pacific":     200000,
-	"Rampart":     164961,
-	"Southeast":   150000,
-	"Southwest":   165000,
-	"Topanga":      57032,
-	"Van Nuys":    325000,
-	"West LA":     228000,
-	"West Valley": 196840,
-	"Wilshire":    251000
-};
 
 d3.csv("data/slopegraph.csv", csv => {
 	let areas = csv.reduce((accumulator, row) => {
@@ -110,14 +48,19 @@ d3.csv("data/slopegraph.csv", csv => {
 				rate: sum(crimes),
 			}
 		});
-
-		// let formattedSimulate = data[data.length - 1];
-		// delete formattedSimulate["year"];
-		// new Simulate(formattedSimulate, {
-		// 	size: 100,
-		// 	population: POPULATION[area],
-		// });
 	}
+
+	let formattedSimulate = Object.entries(areas).reduce((accumulator, [area, data]) => {
+		accumulator[area] = {};
+		for (let key in data[data.length - 1]) {
+			if (CRIME.includes(key))
+				accumulator[area][key] = data[data.length - 1][key];
+		}
+		return accumulator;
+	}, {});
+	new Simulate(formattedSimulate, {
+		container: document.body,
+	});
 });
 
 d3.csv("data/heatmap_2015.csv", csv => {

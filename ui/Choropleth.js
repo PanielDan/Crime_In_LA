@@ -1,4 +1,4 @@
-import { AREA } from "../index.js";
+import { AREA } from "../Constants.js";
 import { kebabCase } from "./Utilities.js";
 
 export default class Choropleth {

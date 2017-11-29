@@ -1,4 +1,4 @@
-import { AREA, POPULATION, CRIME } from '../index.js'
+import { AREA, POPULATION, CRIME } from '../Constants.js'
 
 export default class DistrictDetailsPanel
 {

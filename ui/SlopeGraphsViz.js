@@ -2,7 +2,7 @@ import Choropleth from "./Choropleth.js";
 import MultiSlope from "./MultiSlope.js";
 import Slope from './Slope.js';
 import {sum} from "./Utilities.js";
-import {CRIME} from '../index.js';
+import {CRIME} from '../Constants.js';
 import DistrictDetailsPanel from './DistrictDetailsPanel.js'
 
 export default class SlopeGraphsViz {
