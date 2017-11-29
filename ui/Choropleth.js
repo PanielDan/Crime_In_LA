@@ -1,4 +1,4 @@
-import { AREAS } from "../index.js";
+import { AREA } from "../index.js";
 import { kebabCase } from "./Utilities.js";
 
 export default class Choropleth {
@@ -55,13 +55,9 @@ export default class Choropleth {
                 .enter()
                 .append('path')
                     .attr('d', path)
-                    .attr('id', d => kebabCase(AREAS[d.properties.external_id]))
+                    .attr('id', d => kebabCase(AREA[d.properties.external_id]))
                     .attr('fill', d => color(data[d.properties.external_id-1]))
                     .attr('stroke', 'black');
         }
-    }
-    interpolate(data)
-    {
-
     }
 }

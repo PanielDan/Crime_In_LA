@@ -1,12 +1,11 @@
 import Heat from "./ui/Heat.js";
-import MultiSlope from "./ui/MultiSlope.js"
 import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
 import {sum} from "./ui/Utilities.js";
-import Choropleth from "./ui/Choropleth.js";
+import SlopeGraphsViz from './ui/SlopeGraphsViz.js';
 
-const CRIME = [
+export const CRIME = [
 	"Assault and Battery",
 	"Destruction of Property",
 	"Domestic Disturbance",
@@ -87,27 +86,18 @@ d3.csv("data/slopegraph.csv", csv => {
 		return accumulator;
 	}, {});
 
-	let district = MultiSlope.slice(areas[1]);
-	new MultiSlope(district, {
+	new SlopeGraphsViz(areas, {
 		container: document.body,
-		width: 960,
-		height: 500,
+		width: 1366,
+		height: 768,
 		margin: {
 			top: 10,
 			right: 20,
 			bottom: 25,
-			left: 50,
-		},
-		axis: {
-			x: true,
-			y: true,
-		},
-		domain: {
-			y: MultiSlope.max(district),
-			z: CRIME
-		},
+			left: 50
+		}
 	});
-	let districtCrimeSums = [];
+
 	for (let [area, data] of Object.entries(areas)) {
 		let formattedSlope = data.map((item) => {
 			let crimes = [];
@@ -120,7 +110,6 @@ d3.csv("data/slopegraph.csv", csv => {
 				rate: sum(crimes),
 			}
 		});
-		districtCrimeSums.push((formattedSlope[0].rate - formattedSlope[6].rate)/formattedSlope[6].rate);
 		new Slope(formattedSlope, {
 			container: document.body,
 			width: 960,
@@ -144,23 +133,13 @@ d3.csv("data/slopegraph.csv", csv => {
 			},
 		});
 
-		let formattedSimulate = data[data.length - 1];
-		delete formattedSimulate["year"];
-		new Simulate(formattedSimulate, {
-			size: 100,
-			population: POPULATION[area],
-		});
+		// let formattedSimulate = data[data.length - 1];
+		// delete formattedSimulate["year"];
+		// new Simulate(formattedSimulate, {
+		// 	size: 100,
+		// 	population: POPULATION[area],
+		// });
 	}
-	new Choropleth(districtCrimeSums, {
-		width: 960,
-		height: 500,
-		margin: {
-			top: 10,
-			right: 20,
-			bottom: 25,
-			left: 50,
-		}
-	});
 });
 
 d3.csv("data/heatmap_2015.csv", csv => {
