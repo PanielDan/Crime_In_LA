@@ -1,4 +1,4 @@
-import {sum} from "./Utilities.js";
+import { sum } from "./Utilities.js";
 
 export default class Heat {
 	constructor(data, options = {}) {

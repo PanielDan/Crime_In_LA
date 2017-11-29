@@ -7,6 +7,11 @@ body {
 	     tab-size: 2;
 }
 
+input[type="number"] {
+	max-width: 3.5em;
+	text-align: right;
+}
+
 svg text {
 	-webkit-user-select: none;
 	   -moz-user-select: none;
@@ -21,6 +26,35 @@ svg.line > .chart path {
 
 svg.tree > .chart .node * {
 	cursor: pointer;
+}
+
+.simulate {
+	padding: 4px;
+}
+
+.simulate > form,
+.simulate > form * {
+	display: flex;
+	align-items: center;
+	margin: 0 4px;
+}
+
+.simulate > .chart {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 12px;
+}
+
+.simulate > .chart > img {
+	width: calc(5% - (2 * var(--margin)));
+	margin: var(--margin);
+
+	--margin: 4px;
+}
+
+.simulate > .chart > img[src$="null.svg"] {
+	opacity: 0.25;
 }
 
 svg.tree > .chart .node circle {
