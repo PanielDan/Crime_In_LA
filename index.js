@@ -4,6 +4,7 @@ import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
 import {sum} from "./ui/Utilities.js";
+import Chloropleht from './ui/Chloropleth.js';
 
 const CRIME = [
 	"Assault and Battery",
@@ -40,7 +41,7 @@ const POPULATION = {
 	"Van Nuys":    325000,
 	"West LA":     228000,
 	"West Valley": 196840,
-	"Wilshire":    251000,
+	"Wilshire":    251000
 };
 
 d3.csv("data/slopegraph.csv", csv => {
@@ -61,7 +62,7 @@ d3.csv("data/slopegraph.csv", csv => {
 		return accumulator;
 	}, {});
 
-	let district = MultiSlope.SliceDistrict(areas, "Central");
+	let district = MultiSlope.slice(areas["Central"]);
 	new MultiSlope(district, {
 		container: document.body,
 		width: 960,
@@ -81,7 +82,7 @@ d3.csv("data/slopegraph.csv", csv => {
 			z: CRIME
 		},
 	});
-
+	let districtCrimeSums = [];
 	for (let [area, data] of Object.entries(areas)) {
 		let formattedSlope = data.map((item) => {
 			let crimes = [];
@@ -94,7 +95,7 @@ d3.csv("data/slopegraph.csv", csv => {
 				rate: sum(crimes),
 			}
 		});
-
+		districtCrimeSums.push((formattedSlope[0].rate - formattedSlope[6].rate)/formattedSlope[6].rate);
 		new Slope(formattedSlope, {
 			container: document.body,
 			width: 960,
@@ -125,6 +126,7 @@ d3.csv("data/slopegraph.csv", csv => {
 			population: POPULATION[area],
 		});
 	}
+	console.log(districtCrimeSums);
 });
 
 d3.csv("data/heatmap_2015.csv", csv => {
