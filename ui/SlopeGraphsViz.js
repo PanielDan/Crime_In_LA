@@ -1,9 +1,8 @@
 import Choropleth from "./Choropleth.js";
+import { AREA, CRIME, POPULATION } from '../Constants.js';
 import MultiSlope from "./MultiSlope.js";
 import Slope from './Slope.js';
 import { createSVG, sum } from "./Utilities.js";
-import { AREA, CRIME } from '../Constants.js';
-import DistrictDetailsPanel from './DistrictDetailsPanel.js'
 
 export default class SlopeGraphsViz {
     constructor (slopeData, options = {}) {
@@ -37,17 +36,8 @@ export default class SlopeGraphsViz {
             districtCrimeSums.push((formattedSlope[5].rate - formattedSlope[0].rate) / formattedSlope[0].rate);
         }
         
-        let detailsPanel = new DistrictDetailsPanel(formattedSlopes[0], {
-            container: '#slope-graph-viz',
-            width: 500,
-            height: 350,
-            margin: {
-                top: 10,
-                right: 10,
-                bottom: 10,
-                left: 10,
-            }
-        });
+        let detailsElement = container.node().appendChild(document.createElement("div"));
+
         let choropleth = new Choropleth(districtCrimeSums, {
             container: '#slope-graph-viz',
             width: 500,
@@ -84,7 +74,7 @@ export default class SlopeGraphsViz {
         container.append('div')
                 .attr('id', 'small-multiples')
                 .style('width', '500px');
-        for ( let dataSet of formattedSlopes ) {
+        let slopes = new Map(formattedSlopes.map(dataSet => {
             let slope = new Slope(dataSet, {
                 container: '#small-multiples',
                 width: 150,
@@ -115,6 +105,53 @@ export default class SlopeGraphsViz {
             slope.element.addEventListener("mouseleave", (event) => {
                 choropleth.highlight();
             });
+            slope.element.addEventListener("click", (event) => {
+                updateDetails(dataSet[0].area);
+            });
+
+            return [dataSet[0].area, slope];
+        }));
+
+        let selected = null;
+        function updateDetails(area) {
+            let data = slopeData[area];
+            let crime2010 = sum(data[0]) - data[0].year;
+            let crime2015 = sum(data[5]) - data[5].year;
+
+            detailsElement.innerHTML = `
+<div>
+    <h3>Los Angeles</h3>
+    <h3>Crime Rates vs. State of the Economy</h3>
+</div>
+<br>
+<br>
+<h1>${AREA[area]}</h1>
+<div class="displayframe">
+    <div class="district details">
+        <p>Population: ${POPULATION[AREA[area]]}<p>
+        <p>Crimes in 2010: ${crime2010}</p>
+        <p>Crimes in 2015: ${crime2015}</p>
+        <p>Total Change: <span style="color:red">${crime2015 - crime2010}</span></p>
+        <p>Precent Change: <span style="color:red">${(((crime2015 - crime2010) / crime2010) * 100).toFixed(2)}%</span></p>
+    </div>
+    <ol></ol>
+</div>
+`;
+
+            let crimeDetailsElement = detailsElement.querySelector("ol");
+            Object.entries(data[5])
+                .filter(([key, value]) => CRIME.includes(key))
+                .sort((a, b) => b[1] - a[1])
+                .forEach((item, i) => {
+                    crimeDetailsElement.appendChild(document.createElement("li")).textContent = item[0];
+                });
+
+            if (selected)
+                selected.element.classList.remove("selected");
+            selected = slopes.get(area);
+            if (selected)
+                selected.element.classList.add("selected");
         }
+        updateDetails("1");
     }
 }
