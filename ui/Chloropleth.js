@@ -1,5 +1,6 @@
 export default class Chloropleth {
     constructor(data, options = {}) {
+        let color = d3.scaleOrdinal(d3.schemeCategory20);
         let container = d3.select(options.container || "body");
 
         let svg = container.append("svg")
@@ -7,12 +8,12 @@ export default class Chloropleth {
             .attr("class", "chloropleth");
 
         d3.queue()
-            .defer(d3.json, 'la.json')
+            .defer(d3.json, './data/lapd-divisions.geojson')
             .await(render)
 
         function render(error, la) {
             if (error) return console.warn(error);
-
+            
             // Create a unit projection.
             const laProjection = d3.geoAlbers()
                 .scale(1)
@@ -40,9 +41,24 @@ export default class Chloropleth {
             laProjection.scale(laScale)
                 .translate(laTranslate);
 
-            svg.append('path')
-                .datum(la)
-                .attr('d', path);
+            console.log(la.features);
+            svg.selectAll('.chloropleth')
+                .data(la.features)
+                .enter()
+                .append('path')
+                .attr('d', path)
+                .attr('fill', d => {
+                    console.log(d.properties.external_id);
+                    return color(d.properties.external_id);
+                })
+                .attr('stroke', 'black');
+
+            // svg.selectAll("path")
+            //     .data(data)
+            //     .enter()
+            //     .append("path")
+            //     .attr("d", path)
+            //     .attr("fill", "lightgrey");
         }
     }
 }

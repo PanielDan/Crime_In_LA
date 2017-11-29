@@ -5,6 +5,7 @@ import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
 import {sum} from "./ui/Utilities.js";
 import Chloropleht from './ui/Chloropleth.js';
+import Chloropleth from "./ui/Chloropleth.js";
 
 const CRIME = [
 	"Assault and Battery",
@@ -43,6 +44,30 @@ const POPULATION = {
 	"West Valley": 196840,
 	"Wilshire":    251000
 };
+
+const AREAS = [
+	"Central",
+	"Rampart",
+	"Southwest",
+	"Hollenbeck",
+	"Harbor",
+	"Hollywood",
+	"Wilshire",
+	"West LA",
+	"Van Nuys",
+	"West Valley",
+	"Northeast",
+	"77th Street",
+	"Newton",
+	"Pacific",
+	"N Hollywood",
+	"Foothill",
+	"Devonshire",
+	"Southeast",
+	"Mission",
+	"Olympic",
+	"Topanga",
+];
 
 d3.csv("data/slopegraph.csv", csv => {
 	let areas = csv.reduce((accumulator, row) => {
@@ -126,7 +151,16 @@ d3.csv("data/slopegraph.csv", csv => {
 			population: POPULATION[area],
 		});
 	}
-	console.log(districtCrimeSums);
+	new Chloropleth(districtCrimeSums, {
+		width: 960,
+		height: 500,
+		margin: {
+			top: 10,
+			right: 20,
+			bottom: 25,
+			left: 50,
+		}
+	});
 });
 
 d3.csv("data/heatmap_2015.csv", csv => {
