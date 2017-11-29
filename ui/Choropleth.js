@@ -1,6 +1,16 @@
-export default class Chloropleth {
+import { AREAS } from "../index.js";
+import { kebabCase } from "./Utilities.js";
+
+export default class Choropleth {
     constructor(data, options = {}) {
-        let color = d3.scaleOrdinal(d3.schemeCategory20);
+        let min = Math.min(...data);
+        let max = Math.max(...data);
+        let color = d3.scaleLinear()
+            .domain([min,0, max])
+            // .range(d3.schemeRdYlGn[10]);
+            .range(['green','white','red']);
+        console.log(color(data[5]));
+
         let container = d3.select(options.container || "body");
 
         let svg = container.append("svg")
@@ -11,7 +21,7 @@ export default class Chloropleth {
             .defer(d3.json, './data/lapd-divisions.geojson')
             .await(render)
 
-        function render(error, la) {
+        function render(error, map) {
             if (error) return console.warn(error);
             
             // Create a unit projection.
@@ -25,7 +35,7 @@ export default class Chloropleth {
 
             // Compute the bounds of a feature of interest, 
             // then derive scale & translate.
-            const laBounds = path.bounds(la);
+            const laBounds = path.bounds(map);
             const laScale = 0.95 / Math.max(
                 (laBounds[1][0] - laBounds[0][0]) / options.width,
                 (laBounds[1][1] - laBounds[0][1]) / options.height
@@ -36,29 +46,22 @@ export default class Chloropleth {
             ];
 
             // Update the projection to use computed scale & translate.
-            console.log(laBounds);
-            console.log(laScale, laTranslate)
             laProjection.scale(laScale)
                 .translate(laTranslate);
 
-            console.log(la.features);
+            console.log(data);
             svg.selectAll('.chloropleth')
-                .data(la.features)
+                .data(map.features)
                 .enter()
                 .append('path')
-                .attr('d', path)
-                .attr('fill', d => {
-                    console.log(d.properties.external_id);
-                    return color(d.properties.external_id);
-                })
-                .attr('stroke', 'black');
-
-            // svg.selectAll("path")
-            //     .data(data)
-            //     .enter()
-            //     .append("path")
-            //     .attr("d", path)
-            //     .attr("fill", "lightgrey");
+                    .attr('d', path)
+                    .attr('id', d => kebabCase(AREAS[d.properties.external_id - 1]))
+                    .attr('fill', d => color(data[d.properties.external_id-1]))
+                    .attr('stroke', 'black');
         }
+    }
+    interpolate(data)
+    {
+
     }
 }

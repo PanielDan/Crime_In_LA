@@ -22,3 +22,7 @@ export function weightedRandom(weights) {
 export function diagonal(a, b) {
 	return `M ${a.y} ${a.x} C ${(a.y + b.y) / 2} ${a.x}, ${(a.y + b.y) / 2} ${b.x}, ${b.y} ${b.x}`;
 }
+
+export function kebabCase(string) {
+	return string.replace(/\s+/g, '-').toLowerCase()
+}

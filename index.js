@@ -4,8 +4,7 @@ import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
 import {sum} from "./ui/Utilities.js";
-import Chloropleht from './ui/Chloropleth.js';
-import Chloropleth from "./ui/Chloropleth.js";
+import Choropleth from "./ui/Choropleth.js";
 
 const CRIME = [
 	"Assault and Battery",
@@ -45,7 +44,7 @@ const POPULATION = {
 	"Wilshire":    251000
 };
 
-const AREAS = [
+export const AREAS = [
 	"Central",
 	"Rampart",
 	"Southwest",
@@ -151,7 +150,7 @@ d3.csv("data/slopegraph.csv", csv => {
 			population: POPULATION[area],
 		});
 	}
-	new Chloropleth(districtCrimeSums, {
+	new Choropleth(districtCrimeSums, {
 		width: 960,
 		height: 500,
 		margin: {

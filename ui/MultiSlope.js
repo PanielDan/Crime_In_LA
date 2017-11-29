@@ -3,7 +3,7 @@ export default class MultiSlope {
 		let scale = {
 			x: d3.scaleTime().rangeRound([0, options.width - options.margin.right - options.margin.left]),
 			y: d3.scaleLinear().rangeRound([options.height - options.margin.top - options.margin.bottom, 0]),
-			z: d3.scaleOrdinal(d3.schemeCategory10),
+			z: d3.scaleOrdinal(d3.schemePaired)
 		};
 
 		scale.x.domain(options.domain.x || d3.extent(data[0].data, d => d.year));
@@ -42,7 +42,8 @@ export default class MultiSlope {
 				.enter()
 				.append("path")
 					.attr("d",  d => line(d.data))
-					.style("stroke", d => scale.z(d.key));
+					.style("stroke", d => scale.z(d.key))
+					.style("stroke-width", 3);
 	}
 
 	static slice(data) {
