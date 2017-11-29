@@ -3,10 +3,7 @@ export function diagonal(a, b) {
 }
 
 export function getCSSValue(element, property) {
-	let value = window.getComputedStyle(element).getPropertyCSSValue(property)[0];
-	if (value instanceof CSSValueList)
-		value = value[0];
-	return value.getFloatValue(CSSPrimitiveValue.CSS_PX);
+	return parseFloat(window.getComputedStyle(element).getPropertyValue(property));
 }
 
 export function kebabCase(string) {
