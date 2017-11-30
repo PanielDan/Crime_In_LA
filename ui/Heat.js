@@ -51,10 +51,12 @@ export default class Heat {
 			valueField: "data",
 		});
 
+		options.container.appendChild(document.createElement("p")).textContent = "Top Crimes Committed";
+
 		this._detailsElement = options.container.appendChild(document.createElement("ol"));
 
 		this._redraw();
-		this._displayVisibleDetails(this._selectedData.map(item => item.data));
+		this._displayVisibleDetails();
 	}
 
 	get element() { return this._chart.map.getDiv(); }
@@ -85,6 +87,9 @@ export default class Heat {
 	_displayVisibleDetails(visible) {
 		removeChildren(this._detailsElement);
 
+		if (!visible || !visible.length)
+			visible = this._selectedData.map(item => item.data);
+
 		let values = visible.reduce((accumulator, item) => {
 			for (let key in item.values) {
 				if (!(key in accumulator))
@@ -94,7 +99,7 @@ export default class Heat {
 			}
 			return accumulator;
 		}, {});
-		for (let [key, value] of Object.entries(values).sort((a, b) => b[1] - a[1])) {
+		for (let [key, value] of Object.entries(values).sort((a, b) => b[1] - a[1]).slice(0, 5)) {
 			let listItemElement = this._detailsElement.appendChild(document.createElement("li"));
 			listItemElement.textContent = `${CRIME[parseInt(key) - 1]} (${value})`;
 		}

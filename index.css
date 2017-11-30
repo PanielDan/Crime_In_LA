@@ -141,8 +141,8 @@ form > button {
 	}
 }
 
-.heat > ol {
-	padding-top: 4px;
+.heat > p {
+	margin: 0.5em 0 0;
 }
 
 .line > .chart path {
@@ -227,7 +227,7 @@ form > button {
 }
 
 #Comparison .heat ol {
-	min-height: 12em;
+	min-height: 6.5em
 }
 
 #Team {
