@@ -17,10 +17,11 @@ export default class Heat {
 		this._yearSelectElement = yearSelectContainer.appendChild(document.createElement("select"));
 		this._yearSelectElement.addEventListener("change", this._handleYearChange.bind(this));
 
-		for (let key in data)
-			this._yearSelectElement.appendChild(document.createElement("option")).textContent = key;
-
-		pick(this._yearSelectElement.options).selected = true;
+		for (let key in data) {
+			let optionElement = this._yearSelectElement.appendChild(document.createElement("option"));
+			optionElement.selected = key === options.defaultYear;
+			optionElement.textContent = key;
+		}
 
 		let areaSelectContainer = optionsForm.appendChild(document.createElement("div"));
 		areaSelectContainer.appendChild(document.createElement("span")).textContent = "District";
@@ -30,11 +31,10 @@ export default class Heat {
 
 		for (let key in data[this._yearSelectElement.value]) {
 			let optionElement = this._areaSelectElement.appendChild(document.createElement("option"));
-			optionElement.textContent = AREA[parseInt(key) + 1];
+			optionElement.selected = key === options.defaultArea;
 			optionElement.value = key;
+			optionElement.textContent = AREA[parseInt(key) + 1];
 		}
-
-		pick(this._areaSelectElement.options).selected = true;
 
 		let map = new google.maps.Map(options.container.appendChild(document.createElement("div")), {
 			zoom: this._defaultZoom,

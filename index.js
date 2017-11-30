@@ -218,9 +218,11 @@ d3.queue()
 	.defer(d3.csv, "data/heatmap_2015.csv")
 	.await((error, csv2010, csv2015) => {
 		let formattedHeat = {};
+		let areas = new Set;
 		function parseCSV(csv, year) {
 			formattedHeat[year] = Object.values(csv.reduce((accumulator, item) => {
 				let area = item["Area.ID"];
+				areas.add(area);
 				if (!(area in accumulator))
 					accumulator[area] = {};
 
@@ -243,13 +245,25 @@ d3.queue()
 		parseCSV(csv2010, 2010);
 		parseCSV(csv2015, 2015);
 
-		for (let container of ELEMENTS.heats) {
+		function createHeat(container, {area, year}) {
 			let heat = new Heat(formattedHeat, {
 				container,
 				zoom: 12,
+				defaultArea: area,
+				defaultYear: year,
 			});
 			heat.element.style.setProperty("height", heat.element.offsetWidth + "px");
 		}
+
+		let area = pick(Array.from(areas));
+		createHeat(ELEMENTS.heats[0], {
+			area,
+			year: "2010",
+		});
+		createHeat(ELEMENTS.heats[1], {
+			area,
+			year: "2015",
+		});
 	});
 
 d3.json("data/types.json", json => {
