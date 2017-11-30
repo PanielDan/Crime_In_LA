@@ -1,6 +1,7 @@
 body {
 	margin: 0;
 	font-family: Gill Sans MT, sans-serif;
+	text-align: justify;
 	-moz-tab-size: 2;
 	  -o-tab-size: 2;
 	     tab-size: 2;
@@ -214,4 +215,14 @@ svg text {
 	width: 150px;
 	height: 30px;
 	transition: background-color 200ms;
+}
+
+#Team {
+	text-align: center;
+}
+
+#Team img {
+	width: 150px;
+	height: 150px;
+	border: 1px solid lightgrey;
 }
