@@ -117,11 +117,11 @@ d3.csv("data/slopegraph.csv", csv => {
 		ELEMENTS.crime2010.textContent = crime2010;
 		ELEMENTS.crime2015.textContent = crime2015;
 
-		ELEMENTS.totalChange.textContent = Math.abs(choroplethData.difference);
-		ELEMENTS.totalChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "green");
+		ELEMENTS.totalChange.textContent = choroplethData.difference;
+		ELEMENTS.totalChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "blue");
 
-		ELEMENTS.percentChange.textContent = Math.abs((choroplethData.percentage * 100).toFixed(2)) + "%";
-		ELEMENTS.percentChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "green");
+		ELEMENTS.percentChange.textContent = (choroplethData.percentage * 100).toFixed(2) + "%";
+		ELEMENTS.percentChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "blue");
 
 		removeChildren(ELEMENTS.ranking);
 		for (let crime of formattedChoropleth[key].crimes) {
