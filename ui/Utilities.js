@@ -6,19 +6,16 @@ export function diagonal(a, b) {
 	return `M ${a.y} ${a.x} C ${(a.y + b.y) / 2} ${a.x}, ${(a.y + b.y) / 2} ${b.x}, ${b.y} ${b.x}`;
 }
 
-export function getCSSValue(element, property) {
-	return parseFloat(window.getComputedStyle(element).getPropertyValue(property));
-}
-
-export function kebabCase(string) {
-	return string.replace(/\s+/g, "-").toLowerCase();
-}
-
 export function normalize(object, sigma) {
 	return Object.entries(object).reduce((accumulator, [key, value]) => {
 		accumulator[key] = value / sigma;
 		return accumulator;
 	}, Array.isArray(object) ? [] : {});
+}
+
+export function removeChildren(element) {
+	while (element.firstChild)
+		element.firstChild.remove();
 }
 
 export function sum(object, initialValue = 0) {

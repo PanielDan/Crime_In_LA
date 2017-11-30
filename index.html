@@ -13,6 +13,7 @@
 		<link rel="preload" href="images/Homicide.svg" as="image">
 		<link rel="preload" href="images/Human Trafficking.svg" as="image">
 		<link rel="preload" href="images/Kidnapping.svg" as="image">
+		<link rel="preload" href="images/LA_Police.png" as="image">
 		<link rel="preload" href="images/Other.svg" as="image">
 		<link rel="preload" href="images/Resisting Arrest.svg" as="image">
 		<link rel="preload" href="images/Theft.svg" as="image">
@@ -21,6 +22,107 @@
 		<link rel="stylesheet" href="index.css">
 	</head>
 	<body>
+		<article>
+			<h1 class="text center"><span class="color-main text">Crime</span> in <span class="color-main underline">LA</span></h1>
+			<section id="Intro">
+				<h2 class="text start">Economic State as Cause of Crime</h2>
+				<div class="flex horizontal">
+					<div>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, magna eget eleifend ornare, velit neque maximus sem, auctor dictum dui nisl nec augue. Donec aliquet eleifend vulputate. Vestibulum vehicula eget libero vel elementum. Pellentesque luctus massa nisl, ut laoreet justo cursus sit amet. Sed tempus, urna non blandit placerat, nulla enim maximus lectus, sit amet placerat neque dolor ut magna.</p>
+						<p>Proin euismod, neque rhoncus pulvinar posuere, purus orci sagittis sem, eget convallis mauris quam eu massa. Duis laoreet mollis eros vitae aliquam. Sed vehicula quam dui, in maximus ex tempus et. Aliquam a est nec elit dapibus condimentum quis quis leo. Praesent at pharetra augue, sit amet maximus orci. Duis pharetra condimentum enim eu dapibus. Nullam finibus arcu et sollicitudin vestibulum. Fusce at augue felis. Aliquam erat volutpat.</p>
+					</div>
+					<div>
+						<figure>
+							<img src="images/LA_Police.png">
+							<figcaption class="text end">Credit ABC News</figcaption>
+						</figure>
+					</div>
+				</div>
+			</section>
+			<section id="Types">
+				<h2 class="text end">Exploring Crime Types Reported by LAPD</h2>
+				<div class="flex horizontal">
+					<div>
+						<figure>
+							<svg class="tree"></svg>
+							<figcaption class="text start">Crime Type Mappings</figcaption>
+						</figure>
+					</div>
+					<div>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, magna eget eleifend ornare, velit neque maximus sem, auctor dictum dui nisl nec augue. Donec aliquet eleifend vulputate. Vestibulum vehicula eget libero vel elementum. Pellentesque luctus massa nisl, ut laoreet justo cursus sit amet. Sed tempus, urna non blandit placerat, nulla enim maximus lectus, sit amet placerat neque dolor ut magna.</p>
+						<p>Proin euismod, neque rhoncus pulvinar posuere, purus orci sagittis sem, eget convallis mauris quam eu massa. Duis laoreet mollis eros vitae aliquam. Sed vehicula quam dui, in maximus ex tempus et. Aliquam a est nec elit dapibus condimentum quis quis leo. Praesent at pharetra augue, sit amet maximus orci. Duis pharetra condimentum enim eu dapibus. Nullam finibus arcu et sollicitudin vestibulum. Fusce at augue felis. Aliquam erat volutpat.</p>
+					</div>
+				</div>
+			</section>
+			<section id="Rates">
+				<h2>Crime Rates in LAPD Districts from 2010 - 2015</h2>
+				<div class="flex">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, magna eget eleifend ornare, velit neque maximus sem, auctor dictum dui nisl nec augue. Donec aliquet eleifend vulputate. Vestibulum vehicula eget libero vel elementum. Pellentesque luctus massa nisl, ut laoreet justo cursus sit amet. Sed tempus, urna non blandit placerat, nulla enim maximus lectus, sit amet placerat neque dolor ut magna.</p>
+				</div>
+				<div class="flex horizontal">
+					<div>
+						<div>Los Angeles, California</div>
+						<div>Crime Rates (2010-2015) vs. State of the Economy</div>
+						<div>
+							<h3 class="district"></h3>
+							<div class="flex horizontal">
+								<div>
+									<div class="flex horizontal">
+										<div class="text center">
+											<p>Crimes in 2010</p>
+											<span class="crime-2010"></span>
+										</div>
+										<div class="text center">
+											<p>Crimes in 2015</p>
+											<span class="crime-2015"></span>
+										</div>
+									</div>
+									<div class="flex horizontal">
+										<div class="text center">
+											<p>Total Change</p>
+											<span class="total-change"></span>
+										</div>
+										<div class="text center">
+											<p>Percent Change</p>
+											<span class="percent-change"></span>
+										</div>
+									</div>
+								</div>
+								<div>
+									<p>Crime Type Ranked by % Change</p>
+									<ol class="ranking"></ol>
+								</div>
+							</div>
+						</div>
+					</div>
+					<svg class="choropleth"></svg>
+				</div>
+				<div class="flex horizontal">
+					<svg class="line multi"></svg>
+					<div class="lines-container"></div>
+				</div>
+			</section>
+			<section id="Simulations">
+				<h2>District-centric Crime Simulations</h2>
+				<div class="flex">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, magna eget eleifend ornare, velit neque maximus sem, auctor dictum dui nisl nec augue. Donec aliquet eleifend vulputate. Vestibulum vehicula eget libero vel elementum. Pellentesque luctus massa nisl, ut laoreet justo cursus sit amet. Sed tempus, urna non blandit placerat, nulla enim maximus lectus, sit amet placerat neque dolor ut magna.</p>
+				</div>
+				<div class="flex">
+					<figure class="simulate"></figure>
+				</div>
+			</section>
+			<section id="Comparison">
+				<h2>Neighborhood Comparison with Heat Maps</h2>
+				<div class="flex">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, magna eget eleifend ornare, velit neque maximus sem, auctor dictum dui nisl nec augue. Donec aliquet eleifend vulputate. Vestibulum vehicula eget libero vel elementum. Pellentesque luctus massa nisl, ut laoreet justo cursus sit amet. Sed tempus, urna non blandit placerat, nulla enim maximus lectus, sit amet placerat neque dolor ut magna.</p>
+				</div>
+				<div class="flex horizontal">
+					<figure class="heat"></figure>
+					<figure class="heat"></figure>
+				</div>
+			</section>
+			<section id="Team"></section>
+		</article>
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOOO14atqcvUZUURkaNP-w7PbevEmrAsI"></script>

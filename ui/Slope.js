@@ -5,37 +5,37 @@ export default class Slope {
 			y: d3.scaleLinear().rangeRound([options.height - options.margin.top - options.margin.bottom, 0]),
 		};
 
-		scale.x.domain(options.domain.x || d3.extent(data, d => d[options.key.x]));
-		scale.y.domain(options.domain.y || d3.extent(data, d => d[options.key.y]));
+		scale.x.domain(options.domain.x);
+		scale.y.domain(options.domain.y);
 
 		let line = d3.line()
-			.x(d => scale.x(d[options.key.x]))
-			.y(d => scale.y(d[options.key.y]));
+			.x(d => scale.x(d.key))
+			.y(d => scale.y(d.value));
 
-		let container = d3.select(options.container || "body");
-
-		this._svg = container.append("svg")
-			.attr("viewBox", `0 0 ${options.width}, ${options.height}`)
-			.attr("height", options.height + 'px')
-			.attr("width", options.width + 'px')
+		this._svg = d3.select(options.container)
+			.attr("viewBox", `0 0 ${options.width} ${options.height}`)
 			.attr("class", "line");
 
-		if (options.notext) {
-			d3.svg.axis().tickSize(0);
-		}
-
 		if (options.axis.x) {
+			let axis = d3.axisBottom(scale.x);
+			if (!options.axis.text)
+				axis.ticks(0);
+
 			this._svg.append("g")
 				.attr("class", "axis x")
 				.attr("transform", `translate(${options.margin.left}, ${options.height - options.margin.bottom})`)
-				.call(d3.axisBottom(scale.x).tickValues([]));
+				.call(axis);
 		}
 
 		if (options.axis.y) {
+			let axis = d3.axisLeft(scale.y);
+			if (!options.axis.text)
+				axis.ticks(0);
+
 			this._svg.append("g")
 				.attr("class", "axis y")
 				.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
-				.call(d3.axisLeft(scale.y).tickValues([]));
+				.call(axis);
 		}
 
 		this._svg.append("g")

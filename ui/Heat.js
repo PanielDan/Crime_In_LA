@@ -2,14 +2,9 @@ import { sum } from "./Utilities.js";
 
 export default class Heat {
 	constructor(data, options = {}) {
-		let element = options.container.appendChild(document.createElement("div"));
-		element.classList.add("heat");
-		if (options.width)
-			element.style.setProperty("width", options.width + "px");
-		if (options.height)
-			element.style.setProperty("height", options.height + "px");
+		options.container.classList.add("heat");
 
-		let map = new google.maps.Map(element, {
+		let map = new google.maps.Map(options.container, {
 			zoom: options.zoom,
 			center: options.center,
 		});
@@ -29,6 +24,8 @@ export default class Heat {
 
 		google.maps.event.addListener(this._chart.map, "bounds_changed", this._handleBoundsChanged.bind(this));
 	}
+
+	get element() { return this._chart.map.getDiv(); }
 
 	_handleBoundsChanged(event) {
 		let visible = this._chart.heatmap.getData().data.map(item => item.value);

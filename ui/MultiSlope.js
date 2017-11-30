@@ -1,72 +1,70 @@
-import { kebabCase } from "./Utilities.js";
-
 export default class MultiSlope {
 	constructor(data, options = {}) {
-		let scale = {
+		this._scale = {
 			x: d3.scaleTime().rangeRound([0, options.width - options.margin.right - options.margin.left]),
 			y: d3.scaleLinear().rangeRound([options.height - options.margin.top - options.margin.bottom, 0]),
-			z: d3.scaleOrdinal(d3.schemePaired)
+			z: d3.scaleOrdinal(d3.schemePaired),
 		};
 
-		scale.x.domain(options.domain.x || d3.extent(data[0].data, d => d.year));
-		scale.y.domain([0, options.domain.y]);
-		scale.z.domain(options.domain.z || Object.keys(data[0]));
+		this._line = d3.line()
+			.x(d => this._scale.x(d.key))
+			.y(d => this._scale.y(d.value));
 
-		let line = d3.line()
-			.x(d =>  scale.x(d.year))
-			.y(d => scale.y(d.value));
-
-		let container = d3.select(options.container || "body");
-
-		let svg = container.append("svg")
-            .attr("viewBox", `0 0 ${options.width}, ${options.height}`)
-			.style("height", options.height + 'px')
-			.style("width", options.width + 'px')
+		this._svg = d3.select(options.container)
+			.attr("viewBox", `0 0 ${options.width} ${options.height}`)
 			.attr("class", "line multi");
 
-		if (options.axis.x) {
-			svg.append("g")
-				.attr("class", "axis x")
-				.attr("transform", `translate(${options.margin.left}, ${options.height - options.margin.bottom})`)
-				.call(d3.axisBottom(scale.x));
-		}
-
-		if (options.axis.y) {
-			svg.append("g")
-				.attr("class", "axis y")
-				.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
-				.call(d3.axisLeft(scale.y));
-		}
-
-		svg.append("g")
+		this._chart = this._svg.append("g")
 			.attr("class", "chart")
-			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
-			.selectAll("path")
-				.data(data)
-				.enter()
-				.append("path")
-					.attr("id", d => kebabCase(d.key))
-					.attr("d",  d => line(d.data))
-					.style("stroke", d => scale.z(d.key))
-					.style("stroke-width", 3);
+			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`);
+
+		this._axis = {};
+		if (options.axis.x) {
+			this._axis.x = this._svg.append("g")
+				.attr("class", "axis x")
+				.attr("transform", `translate(${options.margin.left}, ${options.height - options.margin.bottom})`);
+		}
+		if (options.axis.y) {
+			this._axis.y = this._svg.append("g")
+				.attr("class", "axis y")
+				.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`);
+		}
+
+		this.update(data, options.domain);
 	}
 
-	static slice(data) {
-		let slice = Object.keys(data[0])
-		slice.splice(10,2);
-		return slice.map(key => {
-			return {
-				key,
-				data: data.map(item => {
-					return {
-						year: d3.timeParse("%Y")(item.year),
-						value: item[key],
-					};
-				}).filter(item => item.year < d3.timeParse("%Y")(2016))
-			};
-		});
+	update(data, domain) {
+		this._scale.x.domain(domain.x);
+		this._scale.y.domain(domain.y);
+		this._scale.z.domain(domain.z);
+
+		let paths = this._chart.selectAll("path")
+			.data(data, (d, i) => i);
+
+
+		let pathsEnter = paths.enter()
+			.append("path")
+				.style("stroke", (d, i) => this._scale.z(i));
+
+		pathsEnter.merge(paths)
+			.transition()
+				.attr("d", this._line);
+
+		paths.exit()
+			.remove();
+
+		this._createAxis();
 	}
-	static max(slice) {
-		return Math.max(...Object.values(slice).map(item => Math.max(...item.data.map(subitem => subitem.value))));
+
+	_createAxis() {
+		if (this._axis.x) {
+			this._axis.x.transition()
+				.call(d3.axisBottom(this._scale.x));
+		}
+
+		if (this._axis.y) {
+			this._axis.y.transition()
+				.call(d3.axisLeft(this._scale.y));
+		}
 	}
 }

@@ -1,32 +1,56 @@
 body {
 	margin: 0;
-	font-family: sans-serif;
-	font-weight: lighter;
+	font-family: Gill Sans MT, sans-serif;
 	-moz-tab-size: 2;
 	  -o-tab-size: 2;
 	     tab-size: 2;
+
+	--color-main: hsl(360, 100%, 27%);
 }
 
-h3 {
-	font-size: 16px;
-	margin: 3px;
+* {
+	box-sizing: border-box
+}
+
+article {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2em 2em;
+}
+
+h1 {
+	font-size: 5em;
+	font-weight: lighter;
+	text-transform: uppercase;
+}
+
+h2 {
+	margin: 0;
+	padding: 1em 0 0.5em;
+	font-weight: lighter;
 }
 
 ol {
 	margin: 0;
 }
 
+figure {
+	margin-top: 0;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+p {
+	margin-top: 0;
+}
+
 input[type="number"] {
-	max-width: 3.5em;
+	max-width: 4.5em;
 	text-align: right;
 }
 
-svg {
-	transition: background-color 400ms;
-}
-
-svg.selected {
-	background-color: hsl(0, 0%, 90%);
+img {
+	width: 100%;
 }
 
 svg text {
@@ -36,45 +60,63 @@ svg text {
 	        user-select: none;
 }
 
-svg.line > .chart path {
+.selected {
+	background-color: hsl(0, 0%, 90%);
+}
+
+.text.start {
+	text-align: start;
+}
+
+.text.center {
+	text-align: center;
+}
+
+.text.end {
+	text-align: end;
+}
+
+.color-main.text {
+	color: var(--color-main);
+}
+
+.color-main.underline {
+	text-decoration: underline;
+	-webkit-text-decoration-color: var(--color-main);
+	        text-decoration-color: var(--color-main);
+}
+
+.flex {
+	display: flex;
+}
+
+.flex.horizontal {
+	flex-wrap: wrap;
+}
+
+.flex > * {
+	width: 100%;
+	margin-right: var(--margin);
+	margin-left: var(--margin);
+
+	--margin: 8px;
+}
+
+@media screen and (min-width: 600px) {
+	.flex.horizontal > *:not(:only-child) {
+		width: calc(50% - (2 * var(--margin)));
+	}
+}
+
+.line > .chart path {
 	fill: none;
 	stroke: currentColor;
 }
 
-svg.tree > .chart .node * {
-	cursor: pointer;
-}
-
-.simulate {
-	padding: 4px;
-}
-
 .simulate > form {
-	background-color:#A30404;
-	height: 8vh;
-}
-
-.simulate .wrapper {
-	flex-direction: column;
-	align-items: left;
-}
-.simulate .wrapper span {
-	margin: 0px 6px;
-	font-size: 12px;
-	color:white;
-	font-weight: 500;
-}
-
-.simulate .wrapper {
-	margin: 0px 6px;
-	font-size: 12px;
-	color:white;
-	font-weight: 500;
-}
-
-.simulate .wrapper .textfield {
-	display: inline-block;
-	width: 100%;
+	padding: 16px 8px;
+	color: white;
+	background-color: var(--color-main);
 }
 
 .simulate > form,
@@ -84,11 +126,20 @@ svg.tree > .chart .node * {
 	margin: 0 4px;
 }
 
-.simulate button {
-	margin: 8px 10px 0px auto;
-	border: 0;
-	background-color: white;
-	padding: 4px 8px;
+.simulate > form > div {
+	flex-direction: column;
+	align-items: left;
+}
+
+.simulate > form > div span {
+	margin-bottom: 2px;
+	font-size: 0.75em;
+	text-transform: uppercase;
+}
+
+.simulate > form button {
+	align-self: flex-end;
+	margin-left: auto;
 }
 
 .simulate > .chart {
@@ -99,50 +150,68 @@ svg.tree > .chart .node * {
 }
 
 .simulate > .chart > img {
-	width: calc(5% - (2 * var(--margin)));
+	width: calc(var(--width) - (2 * var(--margin)));
 	margin: var(--margin);
 	opacity: 0.8;
 
+	--width: 10%;
 	--margin: 6px;
+}
+
+@media screen and (min-width: 700px) {
+	.simulate > .chart > img {
+		--width: 5%;
+	}
 }
 
 .simulate > .chart > img[src$="null.svg"] {
 	opacity: 0.25;
 }
 
-svg.tree > .chart .node circle {
-	stroke: darkred;
-	stroke-width: 2px;
-}
-
-svg.tree > .chart .link {
+.tree > .chart .link {
 	fill: none;
 	stroke: lightgrey;
 	stroke-width: 2px;
 }
 
-.district.details h1 {
-	font-size: 30px;
+.tree > .chart .node * {
+	cursor: pointer;
 }
 
-#slope-graph-viz {
-	background-color: 'grey';
+.tree > .chart .node circle {
+	stroke: darkred;
+	stroke-width: 2px;
 }
 
-#slope-graph-viz .displayframe {
-	display: flex;
-	align-items: space-between;
-	justify-content: space-between;
-	margin: 5px 0px 5px 0px
+#Rates h3 {
+	margin-bottom: 0.5em;
+	font-size: 2em;
+	font-weight: normal;
+	text-transform: uppercase;
 }
 
-#slope-graph-viz #small-multiples {
+#Rates .flex.horizontal p {
+	margin-bottom: 0;
+}
+
+#Rates .flex.horizontal span {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+#Rates .line.multi > .chart path {
+	stroke-width: 2px;
+}
+
+#Rates .lines-container {
 	display: flex;
 	flex-wrap: wrap;
-	align-content: center;
 	justify-content: center;
+	align-content: center;
 }
 
-#slope-graph-viz #small-multiples > .line {
-	padding: 2px 4px;
+#Rates .lines-container svg {
+	width: 150px;
+	height: 30px;
+	transition: background-color 200ms;
 }

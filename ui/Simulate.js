@@ -1,20 +1,19 @@
 import { AREA, POPULATION } from "../Constants.js";
-import { getCSSValue, sum, weightedRandom } from "./Utilities.js";
+import { removeChildren, sum, weightedRandom } from "./Utilities.js";
 
 export default class Simulate {
 	constructor(data, options = {}) {
 		this._data = data;
 
-		let wrapper = options.container.appendChild(document.createElement("div"));
-		wrapper.classList.add("simulate");
+		options.container.classList.add("simulate");
 
-		this._optionsForm = wrapper.appendChild(document.createElement("form"));
-		this._optionsForm.addEventListener("submit", this._handleOptionsSubmit.bind(this));
+		let optionsForm = options.container.appendChild(document.createElement("form"));
+		optionsForm.addEventListener("submit", this._handleOptionsSubmit.bind(this));
 
-		this._areaSelectElementWrapper = this._optionsForm.appendChild(document.createElement("div"));
-		this._areaSelectElementWrapper.classList.add('wrapper');
-		this._areaSelectElementWrapper.appendChild(document.createElement('span')).innerHTML = "DISTRICT";
-		this._areaSelectElement = this._areaSelectElementWrapper.appendChild(document.createElement("select"));
+		let areaSelectContainer = optionsForm.appendChild(document.createElement("div"));
+		areaSelectContainer.appendChild(document.createElement("span")).textContent = "District";
+
+		this._areaSelectElement = areaSelectContainer.appendChild(document.createElement("select"));
 		this._areaSelectElement.addEventListener("change", this._handleAreaChange.bind(this));
 
 		for (let key in data) {
@@ -23,51 +22,43 @@ export default class Simulate {
 			optionElement.value = key;
 		}
 
-		let createRadio = (value, text, checked = false) => {
-			let labelElement = this._optionsForm.appendChild(document.createElement("label"));
+		let typeSelectContainer = optionsForm.appendChild(document.createElement("div"));
+		typeSelectContainer.appendChild(document.createElement("span")).textContent = "Type";
 
-			let radioElement = labelElement.appendChild(document.createElement("input"));
-			radioElement.type = "radio";
-			radioElement.name = "population";
-			radioElement.value = value;
-			radioElement.checked = checked;
-			radioElement.addEventListener("change", this._handlePopulationChange.bind(this));
+		this._typeSelectElement = typeSelectContainer.appendChild(document.createElement("select"));
+		this._typeSelectElement.addEventListener("change", this._handleTypeChange.bind(this));
 
-			labelElement.appendChild(document.createTextNode(text));
-		};
-		createRadio("total", "Population", true);
-		createRadio("crime", "Crime Total");
+		for (let type of ["Population", "Crime Total"])
+			this._typeSelectElement.appendChild(document.createElement("option")).textContent = type;
 
-		this._sampleInputElementWrapper = this._optionsForm.appendChild(document.createElement("div"));
-		this._sampleInputElementWrapper.classList.add('wrapper');
-		this._sampleInputElementWrapper.appendChild(document.createElement('span')).innerHTML = "SIMULATION SIZE"
-		this._sampleInputElement = this._sampleInputElementWrapper.appendChild(document.createElement("input"));
-		this._sampleInputElement.classList.add('textfield');
-		this._sampleInputElement.type = "number";
-		this._sampleInputElement.min = 1;
-		this._sampleInputElement.value = this._sampleInputElement.placeholder = 100;
-		this._sampleInputElement.addEventListener("input", this._handleSampleInput.bind(this));
+		let sizeInputContainer = optionsForm.appendChild(document.createElement("div"));
+		sizeInputContainer.appendChild(document.createElement("span")).textContent = "Size";
 
-		let redrawButton = this._optionsForm.appendChild(document.createElement("button"));
+		this._sizeInputElement = sizeInputContainer.appendChild(document.createElement("input"));
+		this._sizeInputElement.type = "number";
+		this._sizeInputElement.min = 1;
+		this._sizeInputElement.value = this._sizeInputElement.placeholder = 100;
+		this._sizeInputElement.addEventListener("input", this._handleSizeInput.bind(this));
+
+		let redrawButton = optionsForm.appendChild(document.createElement("button"));
 		redrawButton.textContent = "Simulate";
 
-		this._chart = wrapper.appendChild(document.createElement("div"));
+		this._chart = options.container.appendChild(document.createElement("div"));
 		this._chart.classList.add("chart");
 
 		this._redraw();
 	}
 
 	_redraw() {
-		this._chart.style.setProperty("height", (this._chart.offsetHeight - (2 * getCSSValue(this._chart, "padding"))) + "px");
+		this._chart.style.setProperty("height", this._chart.offsetHeight + "px");
 
-		while (this._chart.firstChild)
-			this._chart.firstChild.remove();
+		removeChildren(this._chart);
 
 		let area = this._areaSelectElement.value;
 		let data = this._data[area];
-		let sample = Math.max(1, parseInt(this._sampleInputElement.value) || 100);
-		let population = this._optionsForm.elements["population"].value === "crime" ? sum(data) : POPULATION[AREA[area]];
-		let result = (new Array(sample)).fill(0).map((item, i) => {
+		let size = Math.max(1, parseInt(this._sizeInputElement.value) || 100);
+		let population = this._typeSelectElement.value === "Population" ? POPULATION[AREA[area]] : sum(data);
+		let result = (new Array(size)).fill(0).map((item, i) => {
 			if (Math.random() > sum(data) / population)
 				return null;
 			return weightedRandom(data);
@@ -94,11 +85,11 @@ export default class Simulate {
 		this._redraw();
 	}
 
-	_handlePopulationChange(event) {
+	_handleTypeChange(event) {
 		this._redraw();
 	}
 
-	_handleSampleInput(event) {
+	_handleSizeInput(event) {
 		this._redraw();
 	}
 }

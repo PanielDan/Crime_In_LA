@@ -5,15 +5,12 @@ export default class Tree {
 		this._boundCollapse = this._collapse.bind(this);
 		this._boundHandleClick = this._handleClick.bind(this);
 
-		let container = d3.select(options.container || "body");
-
-		let svg = container.append("svg")
+		this._chart = d3.select(options.container)
 			.attr("viewBox", `0 0 ${options.width} ${options.height}`)
-			.attr("class", "tree");
-
-		this._chart = svg.append("g")
-			.attr("class", "chart")
-			.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`);
+			.attr("class", "tree")
+			.append("g")
+				.attr("class", "chart")
+				.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`);
 
 		let width = options.width - options.margin.right - options.margin.left;
 		let height = options.height - options.margin.top - options.margin.bottom;
@@ -23,9 +20,6 @@ export default class Tree {
 		this._hierarchy.y0 = 0;
 		this._tree = d3.tree().size([height, width]);
 
-		this._update(this._tree(this._hierarchy));
-
-		this._hierarchy.children.forEach(this._boundCollapse);
 		this._update(this._tree(this._hierarchy));
 	}
 
