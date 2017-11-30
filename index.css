@@ -61,6 +61,35 @@ svg text {
 	        user-select: none;
 }
 
+form {
+	padding: 16px 8px;
+	color: white;
+	background-color: var(--color-main);
+}
+
+form,
+form * {
+	display: flex;
+	align-items: center;
+	margin: 0 4px;
+}
+
+form > div {
+	flex-direction: column;
+	align-items: left;
+}
+
+form > div span {
+	margin-bottom: 2px;
+	font-size: 0.75em;
+	text-transform: uppercase;
+}
+
+form > button {
+	align-self: flex-end;
+	margin-left: auto;
+}
+
 .selected {
 	background-color: hsl(0, 0%, 90%);
 }
@@ -109,38 +138,13 @@ svg text {
 	}
 }
 
+.heat > ol {
+	padding-top: 4px;
+}
+
 .line > .chart path {
 	fill: none;
 	stroke: currentColor;
-}
-
-.simulate > form {
-	padding: 16px 8px;
-	color: white;
-	background-color: var(--color-main);
-}
-
-.simulate > form,
-.simulate > form * {
-	display: flex;
-	align-items: center;
-	margin: 0 4px;
-}
-
-.simulate > form > div {
-	flex-direction: column;
-	align-items: left;
-}
-
-.simulate > form > div span {
-	margin-bottom: 2px;
-	font-size: 0.75em;
-	text-transform: uppercase;
-}
-
-.simulate > form button {
-	align-self: flex-end;
-	margin-left: auto;
 }
 
 .simulate > .chart {
@@ -215,6 +219,10 @@ svg text {
 	width: 150px;
 	height: 30px;
 	transition: background-color 200ms;
+}
+
+#Comparison .heat ol {
+	min-height: 12em;
 }
 
 #Team {

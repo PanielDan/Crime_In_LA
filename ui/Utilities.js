@@ -18,6 +18,10 @@ export function removeChildren(element) {
 		element.firstChild.remove();
 }
 
+export function pick(array) {
+	return array[Math.floor(Math.random() * array.length)];
+}
+
 export function sum(object, initialValue = 0) {
 	return Object.values(object).reduce((accumulator, item) => accumulator + item, initialValue);
 }

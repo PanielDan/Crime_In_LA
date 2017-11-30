@@ -213,34 +213,44 @@ d3.csv("data/slopegraph.csv", csv => {
 	});
 });
 
-d3.csv("data/heatmap_2015.csv", csv => {
-	let formattedHeat = Object.values(csv.reduce((accumulator, item) => {
-		let key = item["Latitude"] + item["Longitude"];
-		if (!(key in accumulator)) {
-			let x = parseFloat(item["Latitude"]);
-			let y = parseFloat(item["Longitude"]);
-			accumulator[key] = {
-				x,
-				y,
-				data: new Heat.Point(x, y, AREA[item["Area.ID"]]),
-			};
-		}
-		accumulator[key].data.add(CRIME[item["Consolidated.Description"]]);
-		return accumulator;
-	}, {}));
+d3.queue()
+	.defer(d3.csv, "data/heatmap_2010.csv")
+	.defer(d3.csv, "data/heatmap_2015.csv")
+	.await((error, csv2010, csv2015) => {
+		let formattedHeat = {};
+		function parseCSV(csv, year) {
+			formattedHeat[year] = Object.values(csv.reduce((accumulator, item) => {
+				let area = item["Area.ID"];
+				if (!(area in accumulator))
+					accumulator[area] = {};
 
-	for (let container of ELEMENTS.heats) {
-		let heat = new Heat(formattedHeat, {
-			container,
-			zoom: 11,
-			center: {
-				lat: sum(formattedHeat.map(item => item.x)) / formattedHeat.length,
-				lng: sum(formattedHeat.map(item => item.y)) / formattedHeat.length,
-			},
-		});
-		container.style.setProperty("height", container.offsetWidth + "px");
-	}
-});
+				let key = item["Latitude"] + item["Longitude"];
+				if (!(key in accumulator[area])) {
+					let x = parseFloat(item["Latitude"]);
+					let y = parseFloat(item["Longitude"]);
+					accumulator[area][key] = {
+						x,
+						y,
+						data: new Heat.Point(x, y),
+					};
+				}
+				accumulator[area][key].data.add(item["Consolidated.Description"]);
+				return accumulator;
+			}, {}));
+			for (let key in formattedHeat[year])
+				formattedHeat[year][key] = Object.values(formattedHeat[year][key]);
+		}
+		parseCSV(csv2010, 2010);
+		parseCSV(csv2015, 2015);
+
+		for (let container of ELEMENTS.heats) {
+			let heat = new Heat(formattedHeat, {
+				container,
+				zoom: 12,
+			});
+			heat.element.style.setProperty("height", heat.element.offsetWidth + "px");
+		}
+	});
 
 d3.json("data/types.json", json => {
 	new Tree(json, {
