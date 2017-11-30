@@ -5,7 +5,7 @@ import MultiSlope from "./ui/MultiSlope.js";
 import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
-import { createSVG, removeChildren, sum } from "./ui/Utilities.js";
+import { createSVG, pick, removeChildren, sum } from "./ui/Utilities.js";
 
 const ELEMENTS = {
 	tree: document.body.querySelector("#Types .tree"),
@@ -206,7 +206,7 @@ d3.csv("data/slopegraph.csv", csv => {
 		return accumulator;
 	}, {});
 
-	updateSelected(1);
+	updateSelected(pick(Object.keys(formattedMultiSlope)));
 
 	new Simulate(formattedSimulate, {
 		container: ELEMENTS.simulate,
