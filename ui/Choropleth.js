@@ -6,7 +6,7 @@ export default class Choropleth {
 		let max = Math.max(...Object.values(data.deltas).map(item => item.percentage));
 		let color = d3.scaleLinear()
 			.domain([min, 0, max])
-			.range(["green","white","blue"]);
+			.range(["green", "hsl(0, 0%, 90%)", "red"]);
 
 		let svg = d3.select(options.container)
 			.attr("viewBox", `0 0 ${options.width} ${options.height}`)
