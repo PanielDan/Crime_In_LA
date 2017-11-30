@@ -11,7 +11,10 @@ export default class Simulate {
 		this._optionsForm = wrapper.appendChild(document.createElement("form"));
 		this._optionsForm.addEventListener("submit", this._handleOptionsSubmit.bind(this));
 
-		this._areaSelectElement = this._optionsForm.appendChild(document.createElement("select"));
+		this._areaSelectElementWrapper = this._optionsForm.appendChild(document.createElement("div"));
+		this._areaSelectElementWrapper.classList.add('wrapper');
+		this._areaSelectElementWrapper.appendChild(document.createElement('span')).innerHTML = "DISTRICT";
+		this._areaSelectElement = this._areaSelectElementWrapper.appendChild(document.createElement("select"));
 		this._areaSelectElement.addEventListener("change", this._handleAreaChange.bind(this));
 
 		for (let key in data) {
@@ -35,7 +38,11 @@ export default class Simulate {
 		createRadio("total", "Population", true);
 		createRadio("crime", "Crime Total");
 
-		this._sampleInputElement = this._optionsForm.appendChild(document.createElement("input"));
+		this._sampleInputElementWrapper = this._optionsForm.appendChild(document.createElement("div"));
+		this._sampleInputElementWrapper.classList.add('wrapper');
+		this._sampleInputElementWrapper.appendChild(document.createElement('span')).innerHTML = "SIMULATION SIZE"
+		this._sampleInputElement = this._sampleInputElementWrapper.appendChild(document.createElement("input"));
+		this._sampleInputElement.classList.add('textfield');
 		this._sampleInputElement.type = "number";
 		this._sampleInputElement.min = 1;
 		this._sampleInputElement.value = this._sampleInputElement.placeholder = 100;
