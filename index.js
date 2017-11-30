@@ -132,8 +132,8 @@ d3.csv("data/slopegraph.csv", csv => {
 		if (!multiSlope) {
 			multiSlope = new MultiSlope(multiSlopeData, {
 				container: ELEMENTS.multiSlope,
-				width: 500,
-				height: 250,
+				width: 400,
+				height: 150,
 				margin: {
 					top: 10,
 					right: 20,
