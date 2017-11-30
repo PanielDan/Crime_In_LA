@@ -32,10 +32,18 @@ export default class Slope {
 			if (!options.axis.text)
 				axis.ticks(0);
 
-			this._svg.append("g")
+			let axisGroup = this._svg.append("g")
 				.attr("class", "axis y")
-				.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`)
-				.call(axis);
+				.attr("transform", `translate(${options.margin.left}, ${options.margin.top})`);
+
+			axisGroup.call(axis);
+
+			axisGroup.append("line")
+				.attr("class", "zero")
+				.attr("x1", 0)
+				.attr("y1", scale.y(0))
+				.attr("x2", options.width - options.margin.right - options.margin.left)
+				.attr("y2", scale.y(0));
 		}
 
 		this._svg.append("g")

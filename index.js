@@ -5,7 +5,7 @@ import MultiSlope from "./ui/MultiSlope.js";
 import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
-import { createSVG, pick, removeChildren, sum } from "./ui/Utilities.js";
+import { createSVG, difference, pick, removeChildren, sum } from "./ui/Utilities.js";
 
 const ELEMENTS = {
 	tree: document.body.querySelector("#Types .tree"),
@@ -30,7 +30,6 @@ d3.csv("data/slopegraph.csv", csv => {
 	let formattedLines = {};
 	let formattedMultiSlope = {};
 	let formattedSimulate = {};
-	let maxTotalCrime = 0;
 
 	for (let row of csv) {
 		let area = parseInt(row["Area.ID"]);
@@ -70,8 +69,6 @@ d3.csv("data/slopegraph.csv", csv => {
 				value: totalCrime,
 			});
 
-			maxTotalCrime = Math.max(maxTotalCrime, totalCrime);
-
 			if (year === 2010 || year === 2015) {
 				formattedChoropleth[area][year] = totalCrime;
 
@@ -80,7 +77,7 @@ d3.csv("data/slopegraph.csv", csv => {
 
 				if (year === 2015) {
 					for (let key in formattedChoropleth[area].crimes)
-						formattedChoropleth[area].crimes[key] = (crimes[key] - formattedChoropleth[area].crimes[key]) / (formattedChoropleth[area].crimes[key] || crimes[key]);
+						formattedChoropleth[area].crimes[key] = difference(formattedChoropleth[area].crimes[key], crimes[key]);
 				}
 			}
 		}
@@ -91,10 +88,23 @@ d3.csv("data/slopegraph.csv", csv => {
 
 	for (let item of Object.values(formattedChoropleth)) {
 		item.difference = item[2015] - item[2010];
-		item.percentage = (item[2015] - item[2010]) / item[2010];
+		item.percentage = difference(item[2010], item[2015]);
 		item.crimes = Object.entries(item.crimes)
 			.sort((a, b) => b[1] - a[1])
 			.map(([crime, change]) => crime);
+	}
+
+	let minTotalChange = Infinity;
+	let maxTotalChange = 0;
+	for (let item of Object.values(formattedLines)) {
+		for (let i = 0; i < item.length - 1; ++i) {
+			item[i].key = item[i + 1].key;
+			item[i].value = difference(item[i].value, item[i + 1].value) * 100;
+
+			minTotalChange = Math.min(minTotalChange, item[i].value);
+			maxTotalChange = Math.max(maxTotalChange, item[i].value);
+		}
+		item.length = item.length - 1;
 	}
 
 	let selected = null;
@@ -188,7 +198,7 @@ d3.csv("data/slopegraph.csv", csv => {
 			},
 			domain: {
 				x: d3.extent(formattedLines[key], d => d.key),
-				y: [0, maxTotalCrime],
+				y: [minTotalChange, maxTotalChange],
 			},
 		});
 		accumulator[key].element.appendChild(createSVG("title")).textContent = AREA[key];

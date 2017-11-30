@@ -141,6 +141,12 @@ form > button {
 	}
 }
 
+.axis.y .zero {
+	stroke: hsl(0, 0%, 50%);
+	stroke-width: 0.5;
+	stroke-dasharray: 2 2;
+}
+
 .heat > p {
 	margin: 0.5em 0 0;
 }
