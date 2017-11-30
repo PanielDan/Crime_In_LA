@@ -41,6 +41,8 @@ svg.tree > .chart .node * {
 	display: flex;
 	align-items: center;
 	margin: 0 4px;
+	background-color:#A30404;
+	max-height: 80%;
 }
 
 .simulate > .chart {
