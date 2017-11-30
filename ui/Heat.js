@@ -87,9 +87,6 @@ export default class Heat {
 
 		let values = visible.reduce((accumulator, item) => {
 			for (let key in item.values) {
-				if (!Object.keys(CRIME).includes(key))
-					continue;
-
 				if (!(key in accumulator))
 					accumulator[key] = 0;
 
