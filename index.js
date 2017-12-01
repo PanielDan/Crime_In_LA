@@ -6,9 +6,12 @@ import MultiStackedColumn from "./ui/MultiStackedColumn.js";
 import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
-import { createSVG, difference, pick, removeChildren, sum } from "./ui/Utilities.js";
+import { createSVG, difference, pick, removeChildren, sum, scroll, scrollTop } from "./ui/Utilities.js";
 
 const ELEMENTS = {
+	navLinks: Array.from(document.body.querySelectorAll("header > nav > a")),
+	sections: new Map(Array.from(document.body.querySelectorAll("section")).map(section => ["#" + section.id, section])),
+
 	tree: document.body.querySelector("#Types .tree"),
 
 	district: document.body.querySelector("#Rates .district"),
@@ -27,6 +30,18 @@ const ELEMENTS = {
 
 	multiStackedColumn: document.body.querySelector("#Time .column.stacked.multi"),
 };
+
+for (let link of ELEMENTS.navLinks) {
+	link.addEventListener("click", event => {
+		let section = ELEMENTS.sections.get(event.target.hash);
+		if (!section)
+			return;
+
+		history.pushState({}, "", event.target.href);
+		scroll(scrollTop(section), 400);
+		event.preventDefault();
+	});
+}
 
 d3.csv("data/slopegraph.csv", csv => {
 	let formattedChoropleth = {};
