@@ -21,6 +21,9 @@ export default class Tree {
 		this._tree = d3.tree().size([height, width]);
 
 		this._update(this._tree(this._hierarchy));
+
+		this._hierarchy.children.forEach(this._boundCollapse);
+		this._update(this._tree(this._hierarchy));
 	}
 
 	_update(node) {

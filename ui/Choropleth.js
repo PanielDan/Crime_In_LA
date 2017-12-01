@@ -48,7 +48,6 @@ export default class Choropleth {
 
 	highlight(area) {
 		this._features.transition()
-			.attr("fill-opacity", d => area === undefined || d.properties.external_id === area ? 1 : 0)
-			.attr("stroke", area === undefined ? "black" : "lightgrey");
+			.attr("fill-opacity", d => area === undefined || d.properties.external_id === area ? 1 : 0);
 	}
 }

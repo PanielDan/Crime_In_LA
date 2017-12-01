@@ -8,7 +8,8 @@ export default class Slope {
 		scale.x.domain(options.domain.x);
 		scale.y.domain(options.domain.y);
 
-		let line = d3.line().curve(d3.curveBasis)
+		let line = d3.line()
+			.curve(d3.curveBasis)
 			.x(d => scale.x(d.key))
 			.y(d => scale.y(d.value));
 

@@ -26,6 +26,13 @@
 		<link rel="stylesheet" href="index.css">
 	</head>
 	<body>
+		<svg width="0" height="0">
+			<linearGradient id="Rates-gradient" gradientUnits="userSpaceOnUse" x1="0" x2="0">
+				<stop offset="25%" stop-color="hsl(0, 100%, 40%)"></stop>
+				<stop offset="50%" stop-color="grey"></stop>
+				<stop offset="75%" stop-color="steelblue"></stop>
+			</linearGradient>
+		</svg>
 		<article>
 			<header>
 				<h1 class="text center"><span class="color-main text">Crime</span> in <span class="color-main underline">LA</span></h1>
@@ -81,30 +88,30 @@
 					<div>
 						<h3 class="district"></h3>
 						<div class="flex horizontal">
-							<div class="flex vertical">
-								<div class="flex horizontal grow">
-									<div class="text center flex vertical">
+							<div>
+								<div class="flex horizontal">
+									<div class="text center">
 										<p>Crimes in 2010</p>
 										<span class="crime-2010"></span>
 									</div>
-									<div class="text center flex vertical">
+									<div class="text center">
 										<p>Crimes in 2015</p>
 										<span class="crime-2015"></span>
 									</div>
 								</div>
-								<div class="flex horizontal grow">
-									<div class="text center flex vertical">
+								<div class="flex horizontal">
+									<div class="text center">
 										<p>Total Change</p>
 										<span class="total-change"></span>
 									</div>
-									<div class="text center flex vertical">
+									<div class="text center">
 										<p>Percent Change</p>
 										<span class="percent-change"></span>
 									</div>
 								</div>
 							</div>
 							<div>
-								<p>Crime Type Ranked by % Change</p>
+								<p>Crime Type Ranked by Percent Change</p>
 								<div class="ranking"></div>
 							</div>
 						</div>
@@ -112,7 +119,10 @@
 					<svg class="choropleth"></svg>
 				</div>
 				<div class="flex horizontal">
-					<svg class="line multi"></svg>
+					<div>
+						<p>Crime Type Ranked by Total Occurence</p>
+						<svg class="line multi"></svg>
+					</div>
 					<div class="lines-container"></div>
 				</div>
 			</section>

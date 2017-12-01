@@ -31,7 +31,7 @@ h1 {
 
 h2 {
 	margin: 0;
-	padding: 1em 0 0.5em;
+	padding: 2em 0 0.5em;
 	font-weight: normal;
 }
 
@@ -196,21 +196,20 @@ form > button {
 	        text-decoration-color: var(--color-main);
 }
 
-.flex.vertical {
-	flex-direction: column;
-	align-items: center;
+.flex {
+	display: flex;
 }
 
 .flex.grow {
 	flex-grow: 1;
 }
 
-.flex {
-	display: flex;
-}
-
 .flex.horizontal {
 	flex-wrap: wrap;
+}
+
+.flex.vertical {
+	flex-direction: column;
 }
 
 .flex > * {
@@ -228,7 +227,7 @@ form > button {
 }
 
 .axis.y .zero {
-	stroke: hsl(0, 0%, 50%);
+	stroke: black;
 	stroke-width: 0.5;
 	stroke-dasharray: 2 2;
 }
@@ -310,7 +309,7 @@ form > button {
 }
 
 #Rates .flex.horizontal p {
-	margin: 0.5em 0em;
+	margin-bottom: 0;
 }
 
 #Rates .flex.horizontal div > span {
@@ -318,15 +317,36 @@ form > button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 0.5em;
 	font-size: 2em;
 	font-weight: normal;
-	margin-bottom: 1em;
-	
 }
 
 #Rates .flex.horizontal div > p {
 	font-size: 1em;
 	font-weight: normal;
+}
+
+#Rates .district {
+	padding: 0.2em 0.4em;
+	background-color: var(--color-main);
+	color: white;
+}
+
+#Rates .ranking {
+	counter-reset: ranking;
+}
+
+#Rates .ranking > div {
+	margin: 0.2em;
+	padding: 0.2em 0.5em;
+	font-size: 0.8em;
+	color: white;
+	counter-increment: ranking;
+}
+
+#Rates .ranking > div::before {
+	content: counter(ranking) ". ";
 }
 
 #Rates .line.multi > .chart path {
@@ -340,22 +360,14 @@ form > button {
 	align-content: center;
 }
 
-#Rates .lines-container svg {
+#Rates .lines-container .line {
 	width: 150px;
 	height: 30px;
 	transition: background-color 200ms;
 }
 
-#Rates .lines-container .chart > * {
-	stroke: url(#temperature-gradient);
-}
-
-.ranking > * {
-	padding: 0.2em 0.5em;
-	margin: 0.2em;
-	color: white;
-	width: 75%;
-	font-size: 0.9em;
+#Rates .lines-container .line .chart path {
+	stroke: url(#Rates-gradient)
 }
 
 #Comparison .heat ol {
@@ -370,11 +382,4 @@ form > button {
 	width: 150px;
 	height: 150px;
 	border: 1px solid lightgrey;
-}
-
-.district {
-	background-color: var(--color-main);
-	color:white;
-	padding: 0.1em 0.4em;
-	width: 100%;
 }
