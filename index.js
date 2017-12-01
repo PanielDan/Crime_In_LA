@@ -6,7 +6,7 @@ import MultiStackedColumn from "./ui/MultiStackedColumn.js";
 import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
-import { createSVG, difference, pick, removeChildren, sum, scroll, scrollTop } from "./ui/Utilities.js";
+import { createSVG, difference, gradientValue, pick, removeChildren, sum, scroll, scrollTop } from "./ui/Utilities.js";
 
 const ELEMENTS = {
 	gradient: document.body.querySelector("#Rates-gradient"),
@@ -24,6 +24,7 @@ const ELEMENTS = {
 	percentChange: document.body.querySelector("#Rates .percent-change"),
 	ranking: document.body.querySelector("#Rates .ranking"),
 	choropleth: document.body.querySelector("#Rates .choropleth"),
+	choroplethLegend: document.body.querySelector("#Rates .choropleth + .legend"),
 	multiSlope: document.body.querySelector("#Rates .line.multi"),
 	linesContainer: document.body.querySelector("#Rates .lines-container"),
 
@@ -114,12 +115,17 @@ d3.csv("data/slopegraph.csv", csv => {
 			formattedSimulate[area] = crimes;
 	}
 
+	let minPercentChange = Infinity;
+	let maxPercentChange = 0;
 	for (let item of Object.values(formattedChoropleth)) {
 		item.difference = item[2015] - item[2010];
 		item.percentage = difference(item[2010], item[2015]);
 		item.crimes = Object.entries(item.crimes)
 			.sort((a, b) => b[1] - a[1])
 			.map(([crime, change]) => crime);
+
+		minPercentChange = Math.min(minPercentChange, item.percentage);
+		maxPercentChange = Math.max(maxPercentChange, item.percentage);
 	}
 
 	let minTotalChange = Infinity;
@@ -134,6 +140,10 @@ d3.csv("data/slopegraph.csv", csv => {
 		}
 		item.length = item.length - 1;
 	}
+
+	let gradient = d3.scaleLinear()
+		.domain([minPercentChange, 0, maxPercentChange])
+		.range([gradientValue("color1"), gradientValue("color2"), gradientValue("color3")]);
 
 	let selected = null;
 	let choropleth = null;
@@ -157,10 +167,10 @@ d3.csv("data/slopegraph.csv", csv => {
 		ELEMENTS.crime2015.textContent = crime2015;
 
 		ELEMENTS.totalChange.textContent = choroplethData.difference;
-		ELEMENTS.totalChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "blue");
+		ELEMENTS.totalChange.style.setProperty("color", gradient(choroplethData.percentage));
 
 		ELEMENTS.percentChange.textContent = (choroplethData.percentage * 100).toFixed(2) + "%";
-		ELEMENTS.percentChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "blue");
+		ELEMENTS.percentChange.style.setProperty("color", gradient(choroplethData.percentage));
 
 		removeChildren(ELEMENTS.ranking);
 
@@ -207,10 +217,22 @@ d3.csv("data/slopegraph.csv", csv => {
 			container: ELEMENTS.choropleth,
 			width: 500,
 			height: 350,
+			legend: true,
+			domain: [minPercentChange, 0, maxPercentChange],
+			range: [gradientValue("color1"), "hsl(0, 0%, 90%)", gradientValue("color3")],
 			handleClick(d) {
 				updateSelected(d.properties.external_id);
 			},
 		});
+
+		function addLegendPoint(percentage) {
+			ELEMENTS.choroplethLegend.appendChild(document.createElement("span")).textContent = (percentage * 100).toFixed(2) + "%";
+		}
+		addLegendPoint(maxPercentChange);
+		addLegendPoint(maxPercentChange / 2);
+		addLegendPoint(0);
+		addLegendPoint(minPercentChange / 2);
+		addLegendPoint(minPercentChange);
 	});
 
 	const slopeHeight = 30;
@@ -222,6 +244,10 @@ d3.csv("data/slopegraph.csv", csv => {
 	};
 	ELEMENTS.gradient.setAttribute("y1", slopeHeight - slopeMargin.top - slopeMargin.bottom);
 	ELEMENTS.gradient.setAttribute("y2", slopeMargin.bottom);
+	Array.from(ELEMENTS.gradient.querySelectorAll("stop"), (stop, i) => {
+		stop.setAttribute("offset", gradientValue("offset" + (i + 1)));
+		stop.setAttribute("stop-color", gradientValue("color" + (i + 1)));
+	});
 
 	slopes = Object.keys(formattedLines).reduce((accumulator, key) => {
 		accumulator[key] = new Slope(formattedLines[key], {

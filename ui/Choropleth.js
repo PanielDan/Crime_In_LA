@@ -2,11 +2,9 @@ import { AREA } from "../Constants.js";
 
 export default class Choropleth {
 	constructor(data, options = {}) {
-		let min = Math.min(...Object.values(data.deltas).map(item => item.percentage));
-		let max = Math.max(...Object.values(data.deltas).map(item => item.percentage));
 		let color = d3.scaleLinear()
-			.domain([min, 0, max])
-			.range(["steelblue", "hsl(0, 0%, 90%)", "hsl(0, 100%, 40%)"]);
+			.domain(options.domain)
+			.range(options.range);
 
 		let svg = d3.select(options.container)
 			.attr("viewBox", `0 0 ${options.width} ${options.height}`)

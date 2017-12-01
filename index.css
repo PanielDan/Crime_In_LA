@@ -7,6 +7,15 @@ body {
 	     tab-size: 2;
 
 	--color-main: hsl(360, 100%, 27%);
+
+	--gradient-color1: steelblue;
+	--gradient-offset1: 25%;
+
+	--gradient-color2: grey;
+	--gradient-offset2: 50%;
+
+	--gradient-color3: hsl(0, 100%, 40%);
+	--gradient-offset3: 75%;
 }
 
 figcaption {
@@ -232,6 +241,10 @@ form > button {
 	stroke-dasharray: 2 2;
 }
 
+.choropleth .legend rect {
+	fill: linear-gradient(to bottom, hsl(0, 100%, 40%) 25%, grey 50%, steelblue 75%);
+}
+
 .column .axis .domain,
 .column.stacked .axis.subgroup line {
 	display: none;
@@ -312,18 +325,18 @@ form > button {
 	margin-bottom: 0;
 }
 
-#Rates .flex.horizontal div > span {
+#Rates .flex.horizontal div > p {
+	font-size: 1em;
+	font-weight: normal;
+}
+
+#Rates .flex.horizontal div > p + span {
 	flex-grow: 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-bottom: 0.5em;
 	font-size: 2em;
-	font-weight: normal;
-}
-
-#Rates .flex.horizontal div > p {
-	font-size: 1em;
 	font-weight: normal;
 }
 
@@ -349,6 +362,35 @@ form > button {
 	content: counter(ranking) ". ";
 }
 
+#Rates .choropleth-container {
+	display: flex;
+}
+
+#Rates .choropleth-container > .choropleth {
+	flex-grow: 1;
+}
+
+#Rates .choropleth-container > .choropleth + .legend {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-end;
+	position: relative;
+	margin: 0.5em 0;
+	padding-right: 0.75em;
+}
+
+#Rates .choropleth-container > .choropleth + .legend::after {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 0.5em;
+	margin: 0.25em 0;
+	content: "";
+	background-image: linear-gradient(to top, var(--gradient-color1) var(--gradient-offset1), var(--gradient-color2) var(--gradient-offset2), var(--gradient-color3) var(--gradient-offset3));
+}
+
 #Rates .line.multi > .chart path {
 	stroke-width: 2px;
 }
@@ -367,7 +409,7 @@ form > button {
 }
 
 #Rates .lines-container .line .chart path {
-	stroke: url(#Rates-gradient)
+	stroke: url(#Rates-gradient);
 }
 
 #Comparison .heat ol {
