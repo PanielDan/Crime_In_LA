@@ -11,4 +11,4 @@ This project was completed as a final project for the Information Visualization 
 
 ### [Paper (pdf)] 
 
-### [Presentation] (presentation/presentation.pdf)
+### [Presentation](presentation/presentation.pdf)
