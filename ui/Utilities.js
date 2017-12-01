@@ -70,7 +70,7 @@ export function scrollTop(element) {
 
 	let y = 0;
 	while (element) {
-		y += element.offsetTop - element.scrollTop;
+		y += element.offsetTop;
 		element = element.offsetParent;
 	}
 	return y;

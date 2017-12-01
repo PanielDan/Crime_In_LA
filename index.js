@@ -9,6 +9,7 @@ import Tree from "./ui/Tree.js";
 import { createSVG, difference, pick, removeChildren, sum, scroll, scrollTop } from "./ui/Utilities.js";
 
 const ELEMENTS = {
+	nav: document.body.querySelector("nav"),
 	navLinks: Array.from(document.body.querySelectorAll("header > nav > a")),
 	sections: new Map(Array.from(document.body.querySelectorAll("section")).map(section => ["#" + section.id, section])),
 
@@ -42,6 +43,13 @@ for (let link of ELEMENTS.navLinks) {
 		event.preventDefault();
 	});
 }
+
+let navScrollTop = scrollTop(ELEMENTS.nav);
+function handleScroll(event) {
+	ELEMENTS.nav.classList.toggle("scrolled", scrollTop() - 1 > navScrollTop);
+}
+window.addEventListener("scroll", handleScroll);
+handleScroll();
 
 d3.csv("data/slopegraph.csv", csv => {
 	let formattedChoropleth = {};
