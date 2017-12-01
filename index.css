@@ -257,7 +257,7 @@ form > button {
 }
 
 #Comparison .heat ol {
-	min-height: 6.5em
+	min-height: 6em;
 }
 
 #Team {

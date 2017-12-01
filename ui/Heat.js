@@ -56,7 +56,7 @@ export default class Heat {
 		this._detailsElement = options.container.appendChild(document.createElement("ol"));
 
 		this._redraw();
-		this._displayVisibleDetails();
+		this._displayVisibleDetails(this._selectedData.map(item => item.data));
 	}
 
 	get element() { return this._chart.map.getDiv(); }
@@ -86,9 +86,6 @@ export default class Heat {
 
 	_displayVisibleDetails(visible) {
 		removeChildren(this._detailsElement);
-
-		if (!visible || !visible.length)
-			visible = this._selectedData.map(item => item.data);
 
 		let values = visible.reduce((accumulator, item) => {
 			for (let key in item.values) {
