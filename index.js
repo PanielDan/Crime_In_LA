@@ -142,7 +142,7 @@ d3.csv("data/slopegraph.csv", csv => {
 		let multiSlopeDomain = {
 			x: [multiSlopeData[0][0].key, multiSlopeData[0][multiSlopeData[0].length - 1].key],
 			y: [0, Math.max(...multiSlopeData.map(item => Math.max(...item.map(subitem => subitem.value))))],
-			color: CRIME,
+			color: Object.keys(CRIME),
 		};
 		let multiSlopeColor = d3.scaleOrdinal(COLOR);
 
