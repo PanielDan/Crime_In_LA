@@ -152,6 +152,21 @@ form > button {
 	stroke-dasharray: 2 2;
 }
 
+.column .axis .domain,
+.column.stacked .axis.subgroup line {
+	display: none;
+}
+
+.column.stacked .axis.group line {
+	stroke: black;
+}
+
+.column.stacked .legend text {
+	font-size: 0.8em;
+	text-anchor: middle;
+	alignment-baseline: central;
+}
+
 .heat > p {
 	margin: 0.5em 0 0;
 }

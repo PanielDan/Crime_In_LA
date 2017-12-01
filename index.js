@@ -2,6 +2,7 @@ import { AREA, COLOR, CRIME, POPULATION } from "./Constants.js";
 import Choropleth from "./ui/Choropleth.js";
 import Heat from "./ui/Heat.js";
 import MultiSlope from "./ui/MultiSlope.js";
+import MultiStackedColumn from "./ui/MultiStackedColumn.js";
 import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
@@ -23,6 +24,8 @@ const ELEMENTS = {
 	simulate: document.body.querySelector("#Simulations .simulate"),
 
 	heats: Array.from(document.body.querySelectorAll("#Comparison .heat")),
+
+	multiStackedColumn: document.body.querySelector("#Time .column.stacked.multi"),
 };
 
 d3.csv("data/slopegraph.csv", csv => {
@@ -278,6 +281,57 @@ d3.queue()
 		createHeat(ELEMENTS.heats[1], {
 			area,
 			year: "2015",
+		});
+
+		let multiStackedColumnGroupKeys = new Set;
+		let multiStackedColumnSubgroupKeys = new Set;
+		let multiStackedColumnValues = new Set;
+		let formattedMultiStackedColumn = csv2015.reduce((accumulator, item) => {
+			let month = parseInt(item["Mo"]);
+			multiStackedColumnGroupKeys.add(month);
+			if (!(month in accumulator))
+				accumulator[month] = [];
+
+			let day = parseInt(item["Day"]);
+			multiStackedColumnSubgroupKeys.add(day);
+			if (!(day in accumulator[month]))
+				accumulator[month][day] = [];
+
+			let hour = parseInt(item["Hour"]) || 0;
+			multiStackedColumnValues.add(hour);
+			if (!(hour in accumulator[month][day]))
+				accumulator[month][day][hour] = [];
+
+			let crime = parseInt(item["Consolidated.Description"]);
+			if (!(crime in accumulator[month][day][hour]))
+				accumulator[month][day][hour][crime] = 0;
+
+			++accumulator[month][day][hour][crime];
+			return accumulator;
+		}, []);
+
+		new MultiStackedColumn(formattedMultiStackedColumn, {
+			container: ELEMENTS.multiStackedColumn,
+			width: 960,
+			height: 500,
+			margin: {
+				top: 10,
+				right: 5,
+				bottom: 20,
+				left: 40,
+			},
+			axis: {
+				x: true,
+				y: true,
+			},
+			legend: true,
+			domain: {
+				x: {
+					group: Array.from(multiStackedColumnGroupKeys).sort((a, b) => a - b),
+					subgroup: Array.from(multiStackedColumnSubgroupKeys).sort((a, b) => a - b),
+					values: Array.from(multiStackedColumnValues).sort((a, b) => a - b),
+				},
+			},
 		});
 	});
 

@@ -50,6 +50,31 @@ export const CRIME = [
 	"Other",
 ];
 
+export const DAY = [
+	"S",
+	"M",
+	"T",
+	"W",
+	"T",
+	"F",
+	"S",
+];
+
+export const MONTH = [
+	"JAN",
+	"FEB",
+	"MAR",
+	"APR",
+	"MAY",
+	"JUN",
+	"JUL",
+	"AUG",
+	"SEP",
+	"OCT",
+	"NOV",
+	"DEC",
+];
+
 // http://www.lapdonline.org/
 export const POPULATION = {
 	"77th Street": 175000,
