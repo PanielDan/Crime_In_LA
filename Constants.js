@@ -23,6 +23,20 @@ export const AREA = [
 	"Topanga",
 ];
 
+export const COLOR = [
+	"hsl(300,  75%,  50%)",
+	"hsl(180,  75%,  50%)",
+	"hsl(120,  75%,  50%)",
+	"hsl(330,  50%,  50%)",
+	"hsl( 30,  50%,  50%)",
+	"hsl(300,  25%,  50%)",
+	"hsl(240,  25%,  50%)",
+	"hsl(180,  25%,  50%)",
+	"hsl(120,  25%,  50%)",
+	"hsl(  0,  25%,  50%)",
+	"hsl(  0, 100%, 100%)",
+];
+
 export const CRIME = [
 	"Assault and Battery",
 	"Destruction of Property",

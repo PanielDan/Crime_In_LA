@@ -1,4 +1,4 @@
-import { AREA, CRIME, POPULATION } from "./Constants.js";
+import { AREA, COLOR, CRIME, POPULATION } from "./Constants.js";
 import Choropleth from "./ui/Choropleth.js";
 import Heat from "./ui/Heat.js";
 import MultiSlope from "./ui/MultiSlope.js";
@@ -116,8 +116,9 @@ d3.csv("data/slopegraph.csv", csv => {
 		let multiSlopeDomain = {
 			x: [multiSlopeData[0][0].key, multiSlopeData[0][multiSlopeData[0].length - 1].key],
 			y: [0, Math.max(...multiSlopeData.map(item => Math.max(...item.map(subitem => subitem.value))))],
-			z: CRIME,
+			color: CRIME,
 		};
+		let multiSlopeColor = d3.scaleOrdinal(COLOR);
 
 		let choroplethData = formattedChoropleth[key];
 		let crime2010 = choroplethData[2010];
@@ -136,7 +137,10 @@ d3.csv("data/slopegraph.csv", csv => {
 		removeChildren(ELEMENTS.ranking);
 		for (let crime of formattedChoropleth[key].crimes) {
 			let listItemElement = ELEMENTS.ranking.appendChild(document.createElement("li"));
-			listItemElement.textContent = crime;
+
+			let span = listItemElement.appendChild(document.createElement("span"));
+			span.textContent = crime;
+			span.style.setProperty("color", COLOR[CRIME.indexOf(crime)]);
 		}
 
 		if (!multiSlope) {
@@ -155,6 +159,7 @@ d3.csv("data/slopegraph.csv", csv => {
 					y: true,
 				},
 				domain: multiSlopeDomain,
+				color: multiSlopeColor,
 			});
 		} else
 			multiSlope.update(multiSlopeData, multiSlopeDomain);

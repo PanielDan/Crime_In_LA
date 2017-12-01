@@ -3,7 +3,7 @@ export default class MultiSlope {
 		this._scale = {
 			x: d3.scaleTime().rangeRound([0, options.width - options.margin.right - options.margin.left]),
 			y: d3.scaleLinear().rangeRound([options.height - options.margin.top - options.margin.bottom, 0]),
-			z: d3.scaleOrdinal(d3.schemePaired),
+			color: options.color,
 		};
 
 		this._line = d3.line()
@@ -36,15 +36,14 @@ export default class MultiSlope {
 	update(data, domain) {
 		this._scale.x.domain(domain.x);
 		this._scale.y.domain(domain.y);
-		this._scale.z.domain(domain.z);
+		this._scale.color.domain(domain.color);
 
 		let paths = this._chart.selectAll("path")
-			.data(data, (d, i) => i);
-
+			.data(data);
 
 		let pathsEnter = paths.enter()
 			.append("path")
-				.style("stroke", (d, i) => this._scale.z(i));
+				.style("stroke", (d, i) => this._scale.color(i));
 
 		pathsEnter.merge(paths)
 			.transition()
