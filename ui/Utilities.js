@@ -33,6 +33,10 @@ export function easeInOutQuad(progress, start, delta, duration) {
 	return (((progress * (progress - 2)) - 1) * (-delta / 2)) + start;
 }
 
+export function gradientValue(key) {
+	return window.getComputedStyle(document.body).getPropertyValue("--gradient-" + key).trim();
+}
+
 export function normalize(object, sigma) {
 	return Object.entries(object).reduce((accumulator, [key, value]) => {
 		accumulator[key] = value / sigma;
