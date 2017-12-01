@@ -41,12 +41,17 @@ export default class Tree {
 				.attr("transform", d => `translate(${node.y0}, ${node.x0})`)
 				.attr("opacity", 0)
 				.on("click", this._boundHandleClick);
-		nodeGroupsEnter.append("circle")
-			.attr("r", 1e-6)
-			.style("fill", d =>  d.__savedChildren ? "darkred" : "white");
+		nodeGroupsEnter.each(function(d) {
+			if (!d.children && !d.__savedChildren)
+				return;
+
+			d3.select(this).append("circle")
+				.attr("r", 1e-6)
+				.style("fill", d =>  d.__savedChildren ? "darkred" : "white")
+		});
 		nodeGroupsEnter.append("text")
 			.attr("dy", "0.35em")
-			.attr("x", d =>  (d.children || d.__savedChildren) ? -13 : 13)
+			.attr("x", d =>  (d.children || d.__savedChildren) ? -13 : 2)
 			.attr("text-anchor", d => (d.children || d.__savedChildren) ? "end" : "start")
 			.text(d => d.data.name);
 

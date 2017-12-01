@@ -193,13 +193,17 @@ form > button {
 	stroke-width: 2px;
 }
 
-.tree > .chart .node * {
+.tree > .chart .node :matches(circle, circle + text) {
 	cursor: pointer;
 }
 
 .tree > .chart .node circle {
 	stroke: darkred;
 	stroke-width: 2px;
+}
+
+.tree > .chart .node text {
+	cursor: default;
 }
 
 #Rates h3 {
