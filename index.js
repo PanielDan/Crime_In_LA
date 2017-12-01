@@ -138,14 +138,15 @@ d3.csv("data/slopegraph.csv", csv => {
 		ELEMENTS.percentChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "blue");
 
 		removeChildren(ELEMENTS.ranking);
+		let count = 1;
 		for (let crime of formattedChoropleth[key].crimes) {
-			let listItemElement = ELEMENTS.ranking.appendChild(document.createElement("li"));
+			let listItemElement = ELEMENTS.ranking.appendChild(document.createElement("div"));
 
-			let span = listItemElement.appendChild(document.createElement("span"));
-			span.textContent = crime;
-			span.style.setProperty("color", COLOR[CRIME.indexOf(crime)]);
+			listItemElement.textContent = count + ". " + crime;
+			listItemElement.style.setProperty("background-color", COLOR[CRIME.indexOf(crime)]);
+			count++;
 		}
-
+		console.log(multiSlopeData);
 		if (!multiSlope) {
 			multiSlope = new MultiSlope(multiSlopeData, {
 				container: ELEMENTS.multiSlope,
@@ -189,6 +190,25 @@ d3.csv("data/slopegraph.csv", csv => {
 		});
 	});
 
+	d3.select(ELEMENTS.linesContainer).append('svg')
+		.style('height', "0px")
+		.style('width', "0px")
+			.append("linearGradient")
+				.attr("id", "temperature-gradient")
+				.attr("gradientUnits", "userSpaceOnUse")
+				.attr("x1", 0).attr("y1", minTotalChange+13)
+				.attr("x2", 0).attr("y2", maxTotalChange)
+				.selectAll("stop")
+				.data([
+					{ offset: "25%", color: "hsl(0, 100%, 40%)" },
+					{ offset: "50%", color: "gray" },
+					{ offset: "75%", color: "steelblue" }
+				])
+				.enter().append("stop")
+				.attr("offset", function (d) { return d.offset; })
+				.attr("stop-color", function (d) { return d.color; });
+
+	
 	slopes = Object.keys(formattedLines).reduce((accumulator, key) => {
 		accumulator[key] = new Slope(formattedLines[key], {
 			container: ELEMENTS.linesContainer.appendChild(createSVG("svg")),

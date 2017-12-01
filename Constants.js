@@ -24,17 +24,17 @@ export const AREA = [
 ];
 
 export const COLOR = [
-	"hsl(300,  75%,  50%)",
-	"hsl(180,  75%,  50%)",
-	"hsl(120,  75%,  50%)",
-	"hsl(330,  50%,  50%)",
-	"hsl( 30,  50%,  50%)",
-	"hsl(300,  25%,  50%)",
-	"hsl(240,  25%,  50%)",
-	"hsl(180,  25%,  50%)",
-	"hsl(120,  25%,  50%)",
-	"hsl(  0,  25%,  50%)",
-	"hsl(  0, 100%, 100%)",
+	"#F44336",
+	"#D81B60",
+	"#673AB7",
+	"#2196F3",
+	"#00BCD4",
+	"#4CAF50",
+	"#FF5722",
+	"#0D47A1",
+	"#795548",
+	"#607D8B",
+	"#FFD600",
 ];
 
 export const CRIME = [
@@ -85,7 +85,7 @@ export const POPULATION = {
 	"Hollenbeck":  200000,
 	"Hollywood":   300000,
 	"Mission":     225849,
-	"N Hollywood": 220000,
+	"North Hollywood": 220000,
 	"Newton":      150000,
 	"Northeast":   250000,
 	"Olympic":     200000,
