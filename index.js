@@ -6,9 +6,13 @@ import MultiStackedColumn from "./ui/MultiStackedColumn.js";
 import Simulate from "./ui/Simulate.js";
 import Slope from "./ui/Slope.js";
 import Tree from "./ui/Tree.js";
-import { createSVG, difference, pick, removeChildren, sum } from "./ui/Utilities.js";
+import { createSVG, difference, pick, removeChildren, sum, scroll, scrollTop } from "./ui/Utilities.js";
 
 const ELEMENTS = {
+	nav: document.body.querySelector("nav"),
+	navLinks: Array.from(document.body.querySelectorAll("header > nav > a")),
+	sections: new Map(Array.from(document.body.querySelectorAll("section")).map(section => ["#" + section.id, section])),
+
 	tree: document.body.querySelector("#Types .tree"),
 
 	district: document.body.querySelector("#Rates .district"),
@@ -27,6 +31,25 @@ const ELEMENTS = {
 
 	multiStackedColumn: document.body.querySelector("#Time .column.stacked.multi"),
 };
+
+for (let link of ELEMENTS.navLinks) {
+	link.addEventListener("click", event => {
+		let section = ELEMENTS.sections.get(event.target.hash);
+		if (!section)
+			return;
+
+		history.pushState({}, "", event.target.href);
+		scroll(scrollTop(section), 400);
+		event.preventDefault();
+	});
+}
+
+let navScrollTop = scrollTop(ELEMENTS.nav);
+function handleScroll(event) {
+	ELEMENTS.nav.classList.toggle("scrolled", scrollTop() - 1 > navScrollTop);
+}
+window.addEventListener("scroll", handleScroll);
+handleScroll();
 
 d3.csv("data/slopegraph.csv", csv => {
 	let formattedChoropleth = {};
@@ -119,7 +142,7 @@ d3.csv("data/slopegraph.csv", csv => {
 		let multiSlopeDomain = {
 			x: [multiSlopeData[0][0].key, multiSlopeData[0][multiSlopeData[0].length - 1].key],
 			y: [0, Math.max(...multiSlopeData.map(item => Math.max(...item.map(subitem => subitem.value))))],
-			color: CRIME,
+			color: Object.keys(CRIME),
 		};
 		let multiSlopeColor = d3.scaleOrdinal(COLOR);
 
