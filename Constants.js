@@ -30,11 +30,11 @@ export const COLOR = [
 	"#2196F3",
 	"#00BCD4",
 	"#4CAF50",
-	"#FF5722",
+	"#FDD835",
 	"#0D47A1",
 	"#795548",
 	"#607D8B",
-	"#FFD600",
+	"#FF9800",
 ];
 
 export const CRIME = [

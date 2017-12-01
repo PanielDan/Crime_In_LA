@@ -63,7 +63,7 @@ export default class MultiSlope {
 
 		if (this._axis.y) {
 			this._axis.y.transition()
-				.call(d3.axisLeft(this._scale.y));
+				.call(d3.axisLeft(this._scale.y).ticks(5));
 		}
 	}
 }
