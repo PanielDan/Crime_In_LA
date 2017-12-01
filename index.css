@@ -31,6 +31,11 @@ h2 {
 	font-weight: lighter;
 }
 
+h3 {
+	margin: 0 0 0.5em;
+	font-weight: lighter;
+}
+
 ol {
 	margin: 0;
 }
