@@ -141,6 +141,10 @@ d3.csv("data/slopegraph.csv", csv => {
 		item.length = item.length - 1;
 	}
 
+	let gradient = d3.scaleLinear()
+		.domain([minPercentChange, 0, maxPercentChange])
+		.range([gradientValue("color1"), gradientValue("color2"), gradientValue("color3")]);
+
 	let selected = null;
 	let choropleth = null;
 	let slopes = null;
@@ -163,10 +167,10 @@ d3.csv("data/slopegraph.csv", csv => {
 		ELEMENTS.crime2015.textContent = crime2015;
 
 		ELEMENTS.totalChange.textContent = choroplethData.difference;
-		ELEMENTS.totalChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "blue");
+		ELEMENTS.totalChange.style.setProperty("color", gradient(choroplethData.percentage));
 
 		ELEMENTS.percentChange.textContent = (choroplethData.percentage * 100).toFixed(2) + "%";
-		ELEMENTS.percentChange.style.setProperty("color", crime2015 > crime2010 ? "red" : "blue");
+		ELEMENTS.percentChange.style.setProperty("color", gradient(choroplethData.percentage));
 
 		removeChildren(ELEMENTS.ranking);
 
@@ -222,7 +226,7 @@ d3.csv("data/slopegraph.csv", csv => {
 		});
 
 		function addLegendPoint(percentage) {
-			ELEMENTS.choroplethLegend.appendChild(document.createElement("span")).textContent = percentage.toFixed(2) + "%";
+			ELEMENTS.choroplethLegend.appendChild(document.createElement("span")).textContent = (percentage * 100).toFixed(2) + "%";
 		}
 		addLegendPoint(maxPercentChange);
 		addLegendPoint(maxPercentChange / 2);
