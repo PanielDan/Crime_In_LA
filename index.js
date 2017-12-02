@@ -163,10 +163,10 @@ d3.csv("data/slopegraph.csv", csv => {
 		ELEMENTS.crime2015.textContent = crime2015;
 
 		ELEMENTS.totalChange.textContent = choroplethData.difference;
-		ELEMENTS.totalChange.style.setProperty("color", choroplethData.percentage < 0 ? 'hsl(0, 100%, 40%)' : 'steelblue' );
+		ELEMENTS.totalChange.style.setProperty("color", choroplethData.percentage < 0 ? gradientValue("color1") : gradientValue("color3"));
 
 		ELEMENTS.percentChange.textContent = (choroplethData.percentage * 100).toFixed(2) + "%";
-		ELEMENTS.percentChange.style.setProperty("color", choroplethData.percentage < 0 ? 'hsl(0, 100%, 40%)' : 'steelblue' );
+		ELEMENTS.percentChange.style.setProperty("color", choroplethData.percentage < 0 ? gradientValue("color1") : gradientValue("color3"));
 
 		removeChildren(ELEMENTS.ranking);
 
