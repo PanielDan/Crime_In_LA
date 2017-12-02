@@ -9,6 +9,6 @@ This project was completed as a final project for the Information Visualization 
 
 ### [Paper (overleaf)](https://www.overleaf.com/read/hdggwspywstv) 
 
-### [Paper (pdf)] 
+### [Paper (pdf)](paper/main.pdf) 
 
 ### [Presentation](presentation/presentation.pdf)
