@@ -172,12 +172,12 @@
                 {
                     "name": "EXTORTION",
                     "parent": "HUMAN TRAFFICKING"
-                },
-                {
-                    "name": "KIDNAPPING",
-                    "parent": "HUMAN TRAFFICKING"
                 }
             ]
+        },
+        {
+            "name": "KIDNAPPING",
+            "parent": "CRIME TYPES"
         },
         {
             "name": "RESISTING ARREST",
