@@ -5,7 +5,7 @@ This project was completed as a final project for the Information Visualization 
 
 ### [Demo](https://devinrousso.com/demo/INF-554/index.html)
 
-### [Video]
+### [Video](https://www.youtube.com/watch?v=7yWO2vFfneA&feature=youtu.be)
 
 ### [Paper (overleaf)](https://www.overleaf.com/read/hdggwspywstv) 
 
